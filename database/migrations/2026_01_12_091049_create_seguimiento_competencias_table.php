@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('fecha_fin');
             $table->timestamps();
             
-            $table->unique(['id_estancia', 'id_competencia', 'numero_semana']);
+            $table->unique(['id_estancia', 'id_competencia', 'numero_semana'], 'uk_estancia_comp_semana');
             $table->index('id_estancia');
             $table->index('id_competencia');
             $table->index('numero_semana');
