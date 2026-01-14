@@ -19,7 +19,10 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://dlzxpd9bh9zbx.cloudfront.net'],
+    'allowed_origins' => [
+        'https://dlzxpd9bh9zbx.cloudfront.net',
+        'http://localhost:5173',
+    ],
 
     'allowed_origins_patterns' => [],
 
