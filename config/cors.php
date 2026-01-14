@@ -20,7 +20,7 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'https://dlzxpd9bh9zbx.cloudfront.net',
+        'https://hotwachiturros.tech',
         'http://localhost:5173',
     ],
 
