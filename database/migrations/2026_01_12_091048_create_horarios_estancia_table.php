@@ -11,18 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('horarios_estancia', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('id_estancia')->constrained('estancias_formativas')->cascadeOnDelete();
-            $table->enum('dia_semana', ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO', 'DOMINGO']);
-            $table->enum('turno', ['MAÑANA', 'TARDE', 'NOCHE', 'CONTINUO'])->default('CONTINUO');
-            $table->time('hora_inicio');
-            $table->time('hora_fin');
-            $table->timestamps();
-            
-            $table->index('id_estancia');
-            $table->index('dia_semana');
-        });
+        if (!Schema::hasTable('horarios_estancia')) {
+            Schema::create('horarios_estancia', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('id_estancia')->constrained('estancias_formativas')->cascadeOnDelete();
+                $table->enum('dia_semana', ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO', 'DOMINGO']);
+                $table->enum('turno', ['MAÑANA', 'TARDE', 'NOCHE', 'CONTINUO'])->default('CONTINUO');
+                $table->time('hora_inicio');
+                $table->time('hora_fin');
+                $table->timestamps();
+
+                $table->index('id_estancia');
+                $table->index('dia_semana');
+            });
+        }
     }
 
     /**
