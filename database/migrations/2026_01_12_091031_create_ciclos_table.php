@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ciclos', function (Blueprint $table) {
-            $table->id();
-            $table->string('codigo', 50)->unique()->comment('Código del ciclo formativo');
-            $table->string('nombre')->comment('Nombre del ciclo');
-            $table->integer('nivel')->comment('Nivel del ciclo (Superior, Medio, etc)');
-            $table->boolean('activo')->default(true);
-            $table->timestamps();
-            
-            $table->index('codigo');
-        });
+        if (!Schema::hasTable('ciclos')) {
+            Schema::create('ciclos', function (Blueprint $table) {
+                $table->id();
+                $table->string('codigo', 50)->unique()->comment('Código del ciclo formativo');
+                $table->string('nombre')->comment('Nombre del ciclo');
+                $table->integer('nivel')->comment('Nivel del ciclo (Superior, Medio, etc)');
+                $table->boolean('activo')->default(true);
+                $table->timestamps();
+
+                $table->index('codigo');
+            });
+        }
     }
 
     /**

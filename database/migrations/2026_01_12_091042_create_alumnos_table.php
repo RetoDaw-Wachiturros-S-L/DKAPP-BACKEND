@@ -11,19 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('alumnos', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('id_user')->unique()->constrained('users')->cascadeOnDelete();
-            $table->string('dni', 15)->unique()->nullable()->comment('DNI del alumno');
-            $table->string('numero_cuaderno', 50)->nullable()->comment('Número de cuaderno/expediente');
-            $table->foreignId('id_ciclo')->constrained('ciclos')->restrictOnDelete()->comment('Ciclo en el que está matriculado');
-            $table->integer('curso_actual')->nullable()->comment('Curso actual: 1, 2, 3...');
-            $table->string('poblacion')->nullable();
-            $table->timestamps();
-            
-            $table->index('dni');
-            $table->index('id_ciclo');
-        });
+        if (!Schema::hasTable('alumnos')) {
+            Schema::create('alumnos', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('id_user')->unique()->constrained('users')->cascadeOnDelete();
+                $table->string('dni', 15)->unique()->nullable()->comment('DNI del alumno');
+                $table->string('numero_cuaderno', 50)->nullable()->comment('Número de cuaderno/expediente');
+                $table->foreignId('id_ciclo')->constrained('ciclos')->restrictOnDelete()->comment('Ciclo en el que está matriculado');
+                $table->integer('curso_actual')->nullable()->comment('Curso actual: 1, 2, 3...');
+                $table->string('poblacion')->nullable();
+                $table->timestamps();
+
+                $table->index('dni');
+                $table->index('id_ciclo');
+            });
+        }
     }
 
     /**

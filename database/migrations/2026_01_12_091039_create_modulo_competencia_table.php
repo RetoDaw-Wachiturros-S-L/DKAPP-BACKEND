@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('modulo_competencia', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('id_modulo')->constrained('modulos')->cascadeOnDelete();
-            $table->foreignId('id_competencia')->constrained('competencias')->cascadeOnDelete();
-            $table->timestamp('created_at')->useCurrent();
-            
-            $table->unique(['id_modulo', 'id_competencia']);
-        });
+        if (!Schema::hasTable('modulo_competencia')) {
+            Schema::create('modulo_competencia', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('id_modulo')->constrained('modulos')->cascadeOnDelete();
+                $table->foreignId('id_competencia')->constrained('competencias')->cascadeOnDelete();
+                $table->timestamp('created_at')->useCurrent();
+
+                $table->unique(['id_modulo', 'id_competencia']);
+            });
+        }
     }
 
     /**

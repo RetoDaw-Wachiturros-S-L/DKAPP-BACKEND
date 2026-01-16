@@ -11,18 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contactos_empresa', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('id_empresa')->constrained('empresas')->cascadeOnDelete();
-            $table->string('nombre');
-            $table->string('apellidos')->nullable();
-            $table->string('email')->nullable();
-            $table->string('telefono', 20)->nullable();
-            $table->boolean('activo')->default(true);
-            $table->timestamps();
-            
-            $table->index('id_empresa');
-        });
+        if (!Schema::hasTable('contactos_empresa')) {
+            Schema::create('contactos_empresa', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('id_empresa')->constrained('empresas')->cascadeOnDelete();
+                $table->string('nombre');
+                $table->string('apellidos')->nullable();
+                $table->string('email')->nullable();
+                $table->string('telefono', 20)->nullable();
+                $table->boolean('activo')->default(true);
+                $table->timestamps();
+
+                $table->index('id_empresa');
+            });
+        }
     }
 
     /**

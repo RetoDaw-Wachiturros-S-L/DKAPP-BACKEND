@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('competencias', function (Blueprint $table) {
-            $table->id();
-            $table->string('codigo', 50)->unique()->comment('Código de la competencia');
-            $table->text('descripcion')->comment('Descripción de la competencia');
-            $table->enum('tipo', ['TECNICA', 'TRANSVERSAL', 'PERSONAL'])->default('TECNICA');
-            $table->timestamps();
-            
-            $table->index('codigo');
-            $table->index('tipo');
-        });
+        if (!Schema::hasTable('competencias')) {
+            Schema::create('competencias', function (Blueprint $table) {
+                $table->id();
+                $table->string('codigo', 50)->unique()->comment('Código de la competencia');
+                $table->text('descripcion')->comment('Descripción de la competencia');
+                $table->enum('tipo', ['TECNICA', 'TRANSVERSAL', 'PERSONAL'])->default('TECNICA');
+                $table->timestamps();
+
+                $table->index('codigo');
+                $table->index('tipo');
+            });
+        }
     }
 
     /**
