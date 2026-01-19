@@ -146,6 +146,23 @@ jobs:
             --application-name ${{ env.EB_APPLICATION_NAME }} \
             --environment-name ${{ env.EB_ENVIRONMENT_NAME }}
       
+      - name: Clear Laravel cache and config
+        run: |
+          # Conectarse al servidor EB y ejecutar comandos de limpieza
+          INSTANCE_IDS=$(aws ec2 describe-instances \
+            --filters "Name=tag:aws:elasticbeanstalk:environment-name,Values=${{ env.EB_ENVIRONMENT_NAME }}" \
+            --query 'Reservations[].Instances[].InstanceId' \
+            --output text)
+          
+          for INSTANCE_ID in $INSTANCE_IDS; do
+            echo "Clearing cache on instance: $INSTANCE_ID"
+            aws ssm send-command \
+              --instance-ids "$INSTANCE_ID" \
+              --document-name "AWS-RunShellScript" \
+              --parameters 'commands=["cd /var/app/current && php artisan config:cache && php artisan cache:clear"]' \
+              --region ${{ env.AWS_REGION }}
+          done
+      
       - name: Get environment health
         run: |
           aws elasticbeanstalk describe-environment-health \

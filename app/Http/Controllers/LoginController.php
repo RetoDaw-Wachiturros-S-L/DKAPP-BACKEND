@@ -24,8 +24,10 @@ class LoginController extends Controller
 
             Log::info('Attempting auth with credentials', ['email' => $credentials['email']]);
 
-            // Find user by email
-            $user = User::where('email', $credentials['email'])->first();
+            // Find user by email and load relations
+            $user = User::with(['alumno.ciclo'])
+                ->where('email', $credentials['email'])
+                ->first();
 
             if (!$user) {
                 Log::warning('User not found', ['email' => $credentials['email']]);
@@ -47,10 +49,13 @@ class LoginController extends Controller
 
             Log::info('Token created successfully', ['user_id' => $user->id]);
 
+            // Asegurar que las relaciones están cargadas antes de serializar
+            $user->load(['alumno.ciclo']);
+
             return response()->json([
                 'token' => $token,
                 'token_type' => 'Bearer',
-                'user' => $user,
+                'user' => $user->toLoginArray(),
             ]);
         } catch (\Exception $e) {
             Log::error('Login error', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
