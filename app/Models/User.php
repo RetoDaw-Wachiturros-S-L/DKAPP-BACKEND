@@ -50,4 +50,43 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Relación con Alumno (un usuario puede ser un alumno)
+     */
+    public function alumno()
+    {
+        return $this->hasOne(Alumno::class, 'id_user');
+    }
+
+    // Función que establece los campos a devolver para el frontend en un primer logueo
+    public function toLoginArray()
+    {
+        $data = [
+            'id' => $this->id,
+            'nombre' => $this->nombre,
+            'apellidos' => $this->apellidos,
+            'email' => $this->email,
+            'telefono' => $this->telefono,
+            'rol' => $this->rol,
+            'activo' => $this->activo,
+        ];
+
+        // Si el usuario es alumno, incluir datos del ciclo
+        if ($this->rol === 'ALUMNO' && $this->alumno) {
+            $data['ciclo'] = $this->alumno->ciclo ? [
+                'id' => $this->alumno->ciclo->id,
+                'codigo' => $this->alumno->ciclo->codigo,
+                'nombre' => $this->alumno->ciclo->nombre,
+                'nivel' => $this->alumno->ciclo->nivel,
+            ] : null;
+            
+            $data['dni'] = $this->alumno->dni;
+            $data['numero_cuaderno'] = $this->alumno->numero_cuaderno;
+            $data['curso_actual'] = $this->alumno->curso_actual;
+            $data['poblacion'] = $this->alumno->poblacion;
+        }
+
+        return $data;
+    }
 }
