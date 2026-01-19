@@ -11,21 +11,6 @@ use App\Models\Alumno;
 
 class User extends Authenticatable
 {
-
-    public function alumno(){
-        return $this->hasOne(Alumno::class, 'id_user', 'id');
-    }
-
-    public function practicasTutorCentro()
-    {
-        return $this->hasMany(EstanciaFormativa::class, 'id_tutor_centro', 'id');
-    }
-
-    public function practicasTutorEmpresa()
-    {
-        return $this->hasMany(EstanciaFormativa::class, 'id_tutor_empresa', 'id');
-    }
-
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens;
 
@@ -75,7 +60,25 @@ class User extends Authenticatable
         return $this->hasOne(Alumno::class, 'id_user');
     }
 
-    // Función que establece los campos a devolver para el frontend en un primer logueo
+    /**
+     * Relación con prácticas como tutor de centro
+     */
+    public function practicasTutorCentro()
+    {
+        return $this->hasMany(EstanciaFormativa::class, 'id_tutor_centro', 'id');
+    }
+
+    /**
+     * Relación con prácticas como tutor de empresa
+     */
+    public function practicasTutorEmpresa()
+    {
+        return $this->hasMany(EstanciaFormativa::class, 'id_tutor_empresa', 'id');
+    }
+
+    /**
+     * Función que establece los campos a devolver para el frontend en un login
+     */
     public function toLoginArray()
     {
         $data = [
@@ -106,3 +109,4 @@ class User extends Authenticatable
         return $data;
     }
 }
+
