@@ -99,7 +99,7 @@ class User extends Authenticatable
                 'nombre' => $this->alumno->ciclo->nombre,
                 'nivel' => $this->alumno->ciclo->nivel,
             ] : null;
-            
+
             $data['dni'] = $this->alumno->dni;
             $data['numero_cuaderno'] = $this->alumno->numero_cuaderno;
             $data['curso_actual'] = $this->alumno->curso_actual;
