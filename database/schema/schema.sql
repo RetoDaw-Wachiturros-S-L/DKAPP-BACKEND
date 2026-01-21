@@ -141,6 +141,23 @@ CREATE TABLE `users` (
   INDEX `idx_email` (`email`),
   INDEX `idx_rol` (`rol`)
 );
+-- ====================================================================
+-- 8.1 TUTORES
+-- ====================================================================
+-- Almacena información específica de los tutores de centro vinculados a usuarios
+CREATE TABLE `tutores` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `id_user` BIGINT NOT NULL,
+    `dni` VARCHAR(15) NULL DEFAULT NULL,
+    `es_de_egibide` BOOL NOT NULL DEFAULT TRUE,
+    `poblacion` VARCHAR(255) NULL DEFAULT NULL,
+    `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `id_user` (`id_user`),
+    UNIQUE INDEX `dni` (`dni`),
+    CONSTRAINT `tutores_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE CASCADE
+);
 
 -- ====================================================================
 -- 9. ALUMNOS
@@ -162,6 +179,35 @@ CREATE TABLE `alumnos` (
   INDEX `idx_dni` (`dni`),
   INDEX `idx_ciclo` (`id_ciclo`)
 );
+
+-- ====================================================================
+-- 9.1 RELACIÓN: TUTORES - CICLOS
+-- ====================================================================
+-- Tabla de relación muchos a muchos que vincula tutores con los ciclos que tutorizan
+
+CREATE TABLE `tutores_ciclos` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `id_tutor` INT NOT NULL,
+    `id_ciclo` INT NOT NULL,
+    PRIMARY KEY (`id`),
+    CONSTRAINT `tutores_ciclos_fk1` FOREIGN KEY (`id_tutor`) REFERENCES `tutores`(`id`) ON DELETE CASCADE,
+    CONSTRAINT `tutores_ciclos_fk2` FOREIGN KEY (`id_ciclo`) REFERENCES `ciclos`(`id`) ON DELETE CASCADE
+);
+
+-- ====================================================================
+-- 9.2 RELACIÓN: ALUMNOS - TUTORES
+-- ====================================================================
+-- Tabla de relación muchos a muchos que vincula alumnos con sus tutores de centro
+
+CREATE TABLE `alumnos_tutores` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `id_alumno` INT NULL,
+    `id_tutor` INT NULL,
+    PRIMARY KEY (`id`),
+    CONSTRAINT `alumnos_tutores_fk1` FOREIGN KEY (`id_alumno`) REFERENCES `alumnos`(`id`) ON DELETE SET NULL,
+    CONSTRAINT `alumnos_tutores_fk2` FOREIGN KEY (`id_tutor`) REFERENCES `tutores`(`id`) ON DELETE SET NULL
+);
+
 
 -- ====================================================================
 -- 10. EMPRESAS
