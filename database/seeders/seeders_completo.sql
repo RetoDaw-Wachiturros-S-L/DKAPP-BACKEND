@@ -1,8 +1,36 @@
 USE dkapp;
 
--- ====================================================================
--- SEEDERS - DATOS DE PRUEBA COMPLETOS
--- ====================================================================
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- Limpieza completa (ordenada para no romper FKs)
+TRUNCATE TABLE `logs`;
+TRUNCATE TABLE `evaluaciones`;
+TRUNCATE TABLE `notas_seguimiento`;
+TRUNCATE TABLE `seguimiento_competencias`;
+TRUNCATE TABLE `horarios_estancia`;
+TRUNCATE TABLE `estancias_formativas`;
+TRUNCATE TABLE `contactos_empresa`;
+TRUNCATE TABLE `empresas`;
+TRUNCATE TABLE `alumnos_tutores`;
+TRUNCATE TABLE `tutores_ciclos`;
+TRUNCATE TABLE `tutores`;
+TRUNCATE TABLE `alumnos`;
+TRUNCATE TABLE `modulo_competencia`;
+TRUNCATE TABLE `competencia_ra`;
+TRUNCATE TABLE `modulos`;
+TRUNCATE TABLE `resultados_aprendizaje`;
+TRUNCATE TABLE `competencias`;
+TRUNCATE TABLE `cursos`;
+TRUNCATE TABLE `ciclos`;
+TRUNCATE TABLE `incidencias`;
+TRUNCATE TABLE `users`;
+TRUNCATE TABLE `password_reset_tokens`;
+TRUNCATE TABLE `personal_access_tokens`;
+TRUNCATE TABLE `sessions`;
+TRUNCATE TABLE `cache`;
+TRUNCATE TABLE `jobs`;
+
+SET FOREIGN_KEY_CHECKS = 1;
 
 -- ====================================================================
 -- 1. CICLOS FORMATIVOS
@@ -113,15 +141,10 @@ INSERT INTO `modulo_competencia` (`id_modulo`, `id_competencia`) VALUES
 (17, 7), (17, 10);
 
 -- ====================================================================
--- 8. USUARIOS - ADMINISTRADOR
+-- 8. USUARIOS
 -- ====================================================================
 INSERT INTO `users` (`nombre`, `apellidos`, `email`, `telefono`, `rol`, `password`, `activo`, `email_verified_at`) VALUES
-('Admin', 'Sistema', 'admin@dkapp.local', '943123456', 'ADMIN', '$2y$10$N9qo8uLOickgx2ZMRZoHyeIjZAgcg7Atz.AzVgMXbSTYZCrVEJYvO', 1, NOW());
-
--- ====================================================================
--- 9. USUARIOS - TUTORES DE CENTRO
--- ====================================================================
-INSERT INTO `users` (`nombre`, `apellidos`, `email`, `telefono`, `rol`, `password`, `activo`, `email_verified_at`) VALUES
+('Admin', 'Sistema', 'admin@dkapp.local', '943123456', 'ADMIN', '$2y$10$N9qo8uLOickgx2ZMRZoHyeIjZAgcg7Atz.AzVgMXbSTYZCrVEJYvO', 1, NOW()),
 ('María', 'García López', 'maria.garcia@egibide.org', '943111111', 'TUTOR_CENTRO', '$2y$10$N9qo8uLOickgx2ZMRZoHyeIjZAgcg7Atz.AzVgMXbSTYZCrVEJYvO', 1, NOW()),
 ('Juan', 'Martínez Pérez', 'juan.martinez@egibide.org', '943111112', 'TUTOR_CENTRO', '$2y$10$N9qo8uLOickgx2ZMRZoHyeIjZAgcg7Atz.AzVgMXbSTYZCrVEJYvO', 1, NOW()),
 ('Elena', 'Rodríguez García', 'elena.rodriguez@egibide.org', '943111113', 'TUTOR_CENTRO', '$2y$10$N9qo8uLOickgx2ZMRZoHyeIjZAgcg7Atz.AzVgMXbSTYZCrVEJYvO', 1, NOW()),
@@ -135,12 +158,7 @@ INSERT INTO `users` (`nombre`, `apellidos`, `email`, `telefono`, `rol`, `passwor
 ('Amaia', 'Etxebarria Ruiz', 'aetxebarria@datainnovate.es', '943211112', 'TUTOR_EMPRESA', '$2y$10$N9qo8uLOickgx2ZMRZoHyeIjZAgcg7Atz.AzVgMXbSTYZCrVEJYvO', 1, NOW()),
 ('Jorge', 'Gómez Díaz', 'jgomez@cloudtech.es', '943211113', 'TUTOR_EMPRESA', '$2y$10$N9qo8uLOickgx2ZMRZoHyeIjZAgcg7Atz.AzVgMXbSTYZCrVEJYvO', 1, NOW()),
 ('Sofía', 'Blanco Moreno', 'sblanco@systeam.es', '943211114', 'TUTOR_EMPRESA', '$2y$10$N9qo8uLOickgx2ZMRZoHyeIjZAgcg7Atz.AzVgMXbSTYZCrVEJYvO', 1, NOW()),
-('Mikel', 'Ibáñez García', 'mibañez@networkpro.es', '943211115', 'TUTOR_EMPRESA', '$2y$10$N9qo8uLOickgx2ZMRZoHyeIjZAgcg7Atz.AzVgMXbSTYZCrVEJYvO', 1, NOW());
-
--- ====================================================================
--- 11. USUARIOS - ALUMNOS
--- ====================================================================
-INSERT INTO `users` (`nombre`, `apellidos`, `email`, `telefono`, `rol`, `password`, `activo`, `email_verified_at`) VALUES
+('Mikel', 'Ibáñez García', 'mibañez@networkpro.es', '943211115', 'TUTOR_EMPRESA', '$2y$10$N9qo8uLOickgx2ZMRZoHyeIjZAgcg7Atz.AzVgMXbSTYZCrVEJYvO', 1, NOW()),
 ('David', 'Jiménez Martínez', 'david.jimenez@egibide.org', '639111111', 'ALUMNO', '$2y$10$N9qo8uLOickgx2ZMRZoHyeIjZAgcg7Atz.AzVgMXbSTYZCrVEJYvO', 1, NOW()),
 ('Laura', 'Sanz García', 'laura.sanz@egibide.org', '639111112', 'ALUMNO', '$2y$10$N9qo8uLOickgx2ZMRZoHyeIjZAgcg7Atz.AzVgMXbSTYZCrVEJYvO', 1, NOW()),
 ('Andrés', 'López Ruiz', 'andres.lopez@egibide.org', '639111113', 'ALUMNO', '$2y$10$N9qo8uLOickgx2ZMRZoHyeIjZAgcg7Atz.AzVgMXbSTYZCrVEJYvO', 1, NOW()),
@@ -153,19 +171,52 @@ INSERT INTO `users` (`nombre`, `apellidos`, `email`, `telefono`, `rol`, `passwor
 ('Nuria', 'Ortiz García', 'nuria.ortiz@egibide.org', '639111120', 'ALUMNO', '$2y$10$N9qo8uLOickgx2ZMRZoHyeIjZAgcg7Atz.AzVgMXbSTYZCrVEJYvO', 1, NOW());
 
 -- ====================================================================
--- 12. ALUMNOS
+-- 9. TUTORES (tabla tutores)
+-- ====================================================================
+INSERT INTO `tutores` (`id_user`, `dni`, `es_de_egibide`, `poblacion`) VALUES
+(2, '11111111A', 1, 'Vitoria-Gasteiz'),
+(3, '22222222B', 1, 'Vitoria-Gasteiz'),
+(4, '33333333C', 1, 'Donostia'),
+(5, '44444444D', 1, 'Bilbao');
+
+-- ====================================================================
+-- 10. RELACIÓN: TUTORES - CICLOS
+-- ====================================================================
+INSERT INTO `tutores_ciclos` (`id_tutor`, `id_ciclo`, `created_at`) VALUES
+(1, 1, NOW()), (1, 3, NOW()),
+(2, 1, NOW()), (2, 2, NOW()),
+(3, 3, NOW()), (3, 5, NOW()),
+(4, 2, NOW()), (4, 4, NOW());
+
+-- ====================================================================
+-- 11. ALUMNOS
 -- ====================================================================
 INSERT INTO `alumnos` (`id_user`, `dni`, `numero_cuaderno`, `id_ciclo`, `curso_actual`, `poblacion`) VALUES
-(8, '12345678A', 'EXP001', 1, 2, 'Bilbao'),
-(9, '87654321B', 'EXP002', 1, 2, 'Bilbao'),
-(10, '11223344C', 'EXP003', 1, 2, 'Bilbao'),
-(11, '44332211D', 'EXP004', 2, 2, 'Bilbao'),
-(12, '55667788E', 'EXP005', 2, 2, 'Bilbao'),
-(13, '88776655F', 'EXP006', 3, 1, 'Bilbao'),
-(14, '99001122G', 'EXP007', 3, 1, 'Bilbao'),
-(15, '22110099H', 'EXP008', 4, 1, 'Bilbao'),
-(16, '33445566I', 'EXP009', 1, 1, 'Bilbao'),
-(17, '66554433J', 'EXP010', 2, 1, 'Bilbao');
+(11, '12345678A', 'EXP001', 1, 2, 'Bilbao'),
+(12, '87654321B', 'EXP002', 1, 2, 'Bilbao'),
+(13, '11223344C', 'EXP003', 1, 2, 'Bilbao'),
+(14, '44332211D', 'EXP004', 2, 2, 'Bilbao'),
+(15, '55667788E', 'EXP005', 2, 2, 'Bilbao'),
+(16, '88776655F', 'EXP006', 3, 1, 'Bilbao'),
+(17, '99001122G', 'EXP007', 3, 1, 'Bilbao'),
+(18, '22110099H', 'EXP008', 4, 1, 'Bilbao'),
+(19, '33445566I', 'EXP009', 1, 1, 'Bilbao'),
+(20, '66554433J', 'EXP010', 2, 1, 'Bilbao');
+
+-- ====================================================================
+-- 12. RELACIÓN: ALUMNOS - TUTORES
+-- ====================================================================
+INSERT INTO `alumnos_tutores` (`id_alumno`, `id_tutor`, `created_at`) VALUES
+(1, 1, NOW()), (1, 2, NOW()),            -- David con María y Juan
+(2, 1, NOW()), (2, 3, NOW()),            -- Laura con María y Elena
+(3, 2, NOW()), (3, 4, NOW()),            -- Andrés con Juan y Carlos
+(4, 2, NOW()), (4, 4, NOW()),            -- Marta con Juan y Carlos
+(5, 1, NOW()), (5, 4, NOW()),            -- Pablo con María y Carlos
+(6, 3, NOW()), (6, 1, NOW()),            -- Sandra con Elena y María
+(7, 3, NOW()), (7, 2, NOW()),            -- Víctor con Elena y Juan
+(8, 4, NOW()), (8, 1, NOW()),            -- Raquel con Carlos y María
+(9, 2, NOW()),                           -- Miguel con Juan
+(10, 1, NOW()), (10, 3, NOW());          -- Nuria con María y Elena
 
 -- ====================================================================
 -- 13. EMPRESAS
@@ -201,80 +252,70 @@ INSERT INTO `contactos_empresa` (`id_empresa`, `nombre`, `apellidos`, `email`, `
 -- ====================================================================
 INSERT INTO `estancias_formativas` (`id_alumno`, `id_empresa`, `id_tutor_empresa`, `id_tutor_centro`, `id_curso`, `fecha_inicio`, `fecha_fin`, `horas_totales`, `horas_realizadas`, `estado`, `observaciones`) VALUES
 -- Alumnos 2º DAM en empresas
-(1, 1, 5, 2, 2, '2026-02-01', '2026-06-30', 400, 380, 'EN_CURSO', 'Alumno muy motivado, buen progreso en desarrollo'),
-(2, 2, 6, 2, 2, '2026-02-01', '2026-06-30', 400, 350, 'EN_CURSO', 'Muestra interés en arquitectura de datos'),
-(3, 3, 7, 3, 2, '2026-02-01', '2026-06-30', 400, 390, 'EN_CURSO', 'Excelente desempeño en cloud computing'),
+(1, 1, 6, 2, 2, '2026-02-01', '2026-06-30', 400, 380, 'EN_CURSO', 'Alumno muy motivado, buen progreso en desarrollo'),
+(2, 2, 7, 2, 2, '2026-02-01', '2026-06-30', 400, 350, 'EN_CURSO', 'Muestra interés en arquitectura de datos'),
+(3, 3, 8, 3, 2, '2026-02-01', '2026-06-30', 400, 390, 'EN_CURSO', 'Excelente desempeño en cloud computing'),
 -- Alumnos 2º ASIR en empresas
-(4, 4, 8, 4, 4, '2026-02-01', '2026-06-30', 400, 370, 'EN_CURSO', 'Buen conocimiento en sistemas operativos'),
-(5, 5, 9, 4, 4, '2026-02-01', '2026-06-30', 400, 360, 'EN_CURSO', 'Demuestra capacidad en administración de redes'),
+(4, 4, 9, 4, 4, '2026-02-01', '2026-06-30', 400, 370, 'EN_CURSO', 'Buen conocimiento en sistemas operativos'),
+(5, 5, 10, 4, 4, '2026-02-01', '2026-06-30', 400, 360, 'EN_CURSO', 'Demuestra capacidad en administración de redes'),
 -- Alumnos 1º DAW en empresa
 (6, 6, 10, 3, 5, '2026-02-01', '2026-04-30', 200, 180, 'EN_CURSO', 'Alumna con buen potencial en desarrollo web'),
 (7, 6, 10, 3, 5, '2026-05-01', '2026-06-30', 200, 150, 'PLANIFICADA', 'Próxima rotación en el mismo centro'),
 -- Alumnos 1º SMR en empresa
-(8, 7, 11, 2, 7, '2026-02-01', '2026-04-30', 200, 190, 'EN_CURSO', 'Buen progreso en infraestructura'),
-(9, 1, 5, 2, 7, '2026-05-01', '2026-06-30', 200, 0, 'PLANIFICADA', 'Próxima rotación'),
+(8, 7, 6, 2, 7, '2026-02-01', '2026-04-30', 200, 190, 'EN_CURSO', 'Buen progreso en infraestructura'),
+(9, 1, 6, 2, 7, '2026-05-01', '2026-06-30', 200, 0, 'PLANIFICADA', 'Próxima rotación'),
 -- Alumno con estancia completada
-(10, 3, 7, 3, 1, '2025-11-01', '2025-12-20', 100, 100, 'COMPLETADA', 'Estancia completada satisfactoriamente');
+(10, 3, 8, 3, 1, '2025-11-01', '2025-12-20', 100, 100, 'COMPLETADA', 'Estancia completada satisfactoriamente');
 
 -- ====================================================================
 -- 16. HORARIOS DE ESTANCIA
 -- ====================================================================
 INSERT INTO `horarios_estancia` (`id_estancia`, `dia_semana`, `turno`, `hora_inicio`, `hora_fin`) VALUES
--- Estancia 1
 (1, 'LUNES', 'CONTINUO', '08:00', '16:00'),
 (1, 'MARTES', 'CONTINUO', '08:00', '16:00'),
 (1, 'MIERCOLES', 'CONTINUO', '08:00', '16:00'),
 (1, 'JUEVES', 'CONTINUO', '08:00', '16:00'),
 (1, 'VIERNES', 'CONTINUO', '08:00', '14:00'),
--- Estancia 2
 (2, 'LUNES', 'CONTINUO', '09:00', '17:00'),
 (2, 'MARTES', 'CONTINUO', '09:00', '17:00'),
 (2, 'MIERCOLES', 'CONTINUO', '09:00', '17:00'),
 (2, 'JUEVES', 'CONTINUO', '09:00', '17:00'),
 (2, 'VIERNES', 'MAÑANA', '09:00', '13:00'),
--- Estancia 3
 (3, 'LUNES', 'CONTINUO', '08:00', '16:00'),
 (3, 'MARTES', 'CONTINUO', '08:00', '16:00'),
 (3, 'MIERCOLES', 'CONTINUO', '08:00', '16:00'),
 (3, 'JUEVES', 'CONTINUO', '08:00', '16:00'),
 (3, 'VIERNES', 'CONTINUO', '08:00', '16:00'),
--- Estancia 4
 (4, 'LUNES', 'CONTINUO', '07:30', '15:30'),
 (4, 'MARTES', 'CONTINUO', '07:30', '15:30'),
 (4, 'MIERCOLES', 'CONTINUO', '07:30', '15:30'),
 (4, 'JUEVES', 'CONTINUO', '07:30', '15:30'),
 (4, 'VIERNES', 'MAÑANA', '07:30', '12:00'),
--- Estancia 5
 (5, 'LUNES', 'CONTINUO', '08:00', '16:00'),
 (5, 'MARTES', 'CONTINUO', '08:00', '16:00'),
 (5, 'MIERCOLES', 'CONTINUO', '08:00', '16:00'),
 (5, 'JUEVES', 'CONTINUO', '08:00', '16:00'),
 (5, 'VIERNES', 'CONTINUO', '08:00', '16:00'),
--- Estancia 6
 (6, 'LUNES', 'CONTINUO', '09:00', '17:00'),
 (6, 'MARTES', 'CONTINUO', '09:00', '17:00'),
 (6, 'MIERCOLES', 'CONTINUO', '09:00', '17:00'),
 (6, 'JUEVES', 'CONTINUO', '09:00', '17:00'),
 (6, 'VIERNES', 'MAÑANA', '09:00', '13:00'),
--- Estancia 7
 (7, 'LUNES', 'CONTINUO', '09:00', '17:00'),
 (7, 'MARTES', 'CONTINUO', '09:00', '17:00'),
 (7, 'MIERCOLES', 'CONTINUO', '09:00', '17:00'),
 (7, 'JUEVES', 'CONTINUO', '09:00', '17:00'),
 (7, 'VIERNES', 'MAÑANA', '09:00', '13:00'),
--- Estancia 8
 (8, 'LUNES', 'CONTINUO', '08:00', '16:00'),
 (8, 'MARTES', 'CONTINUO', '08:00', '16:00'),
 (8, 'MIERCOLES', 'CONTINUO', '08:00', '16:00'),
 (8, 'JUEVES', 'CONTINUO', '08:00', '16:00'),
 (8, 'VIERNES', 'CONTINUO', '08:00', '16:00'),
--- Estancia 9
 (9, 'LUNES', 'CONTINUO', '08:00', '16:00'),
 (9, 'MARTES', 'CONTINUO', '08:00', '16:00'),
 (9, 'MIERCOLES', 'CONTINUO', '08:00', '16:00'),
 (9, 'JUEVES', 'CONTINUO', '08:00', '16:00'),
 (9, 'VIERNES', 'CONTINUO', '08:00', '16:00'),
--- Estancia 10 (completada)
 (10, 'LUNES', 'CONTINUO', '08:00', '16:00'),
 (10, 'MARTES', 'CONTINUO', '08:00', '16:00'),
 (10, 'MIERCOLES', 'CONTINUO', '08:00', '16:00'),
@@ -285,7 +326,6 @@ INSERT INTO `horarios_estancia` (`id_estancia`, `dia_semana`, `turno`, `hora_ini
 -- 17. SEGUIMIENTO DE COMPETENCIAS
 -- ====================================================================
 INSERT INTO `seguimiento_competencias` (`id_estancia`, `id_competencia`, `numero_semana`, `fecha_inicio`, `fecha_fin`) VALUES
--- Estancia 1 (DAM)
 (1, 1, 1, '2026-02-01', '2026-02-07'),
 (1, 1, 2, '2026-02-08', '2026-02-14'),
 (1, 1, 3, '2026-02-15', '2026-02-21'),
@@ -294,31 +334,30 @@ INSERT INTO `seguimiento_competencias` (`id_estancia`, `id_competencia`, `numero
 (1, 3, 6, '2026-03-08', '2026-03-14'),
 (1, 2, 7, '2026-03-15', '2026-03-21'),
 (1, 2, 8, '2026-03-22', '2026-03-28'),
--- Estancia 2 (DAM)
 (2, 1, 1, '2026-02-01', '2026-02-07'),
 (2, 1, 2, '2026-02-08', '2026-02-14'),
 (2, 3, 3, '2026-02-15', '2026-02-21'),
 (2, 3, 4, '2026-02-22', '2026-02-28'),
 (2, 3, 5, '2026-03-01', '2026-03-07'),
--- Estancia 3 (DAM)
 (3, 2, 1, '2026-02-01', '2026-02-07'),
 (3, 2, 2, '2026-02-08', '2026-02-14'),
 (3, 2, 3, '2026-02-15', '2026-02-21'),
 (3, 2, 4, '2026-02-22', '2026-02-28'),
--- Estancia 4 (ASIR)
 (4, 4, 1, '2026-02-01', '2026-02-07'),
 (4, 4, 2, '2026-02-08', '2026-02-14'),
 (4, 5, 3, '2026-02-15', '2026-02-21'),
 (4, 5, 4, '2026-02-22', '2026-02-28'),
--- Estancia 5 (ASIR)
 (5, 5, 1, '2026-02-01', '2026-02-07'),
 (5, 5, 2, '2026-02-08', '2026-02-14'),
 (5, 4, 3, '2026-02-15', '2026-02-21'),
--- Estancia 6 (DAW)
 (6, 2, 1, '2026-02-01', '2026-02-07'),
 (6, 2, 2, '2026-02-08', '2026-02-14'),
 (6, 2, 3, '2026-02-15', '2026-02-21'),
--- Estancia 10 (completada)
+(7, 2, 1, '2026-05-01', '2026-05-07'),
+(7, 2, 2, '2026-05-08', '2026-05-14'),
+(8, 4, 1, '2026-02-01', '2026-02-07'),
+(8, 5, 2, '2026-02-08', '2026-02-14'),
+(9, 4, 1, '2026-05-01', '2026-05-07'),
 (10, 1, 1, '2025-11-01', '2025-11-07'),
 (10, 1, 2, '2025-11-08', '2025-11-14'),
 (10, 3, 3, '2025-11-15', '2025-11-21'),
@@ -331,29 +370,22 @@ INSERT INTO `seguimiento_competencias` (`id_estancia`, `id_competencia`, `numero
 -- 18. NOTAS/SEGUIMIENTO DEL ALUMNO
 -- ====================================================================
 INSERT INTO `notas_seguimiento` (`id_estancia`, `id_alumno`, `fecha`, `accion`, `contenido`) VALUES
--- Estancia 1
 (1, 1, '2026-02-01', 'PRESENTACION_ALUMNO', 'David se presenta en TecnoSoluciones. Buen clima de acogida. Se integra rápidamente en el equipo.'),
 (1, 1, '2026-02-08', 'LLAMADA_SEGUIMIENTO', 'Llamada a Roberto (tutor empresa). Todo va bien, David está aprendiendo mucho sobre arquitectura de aplicaciones.'),
 (1, 1, '2026-02-15', 'VISITA_CENTRO_TRABAJO', 'Visita realizada por María (tutora centro). Observa buen ambiente de trabajo y compromiso del alumno.'),
 (1, 1, '2026-03-01', 'REUNION_TUTOR_PRACTICAS', 'Reunión con tutor empresa. Progreso excelente, participa en proyectos reales.'),
--- Estancia 2
 (2, 2, '2026-02-01', 'PRESENTACION_ALUMNO', 'Laura comienza en DataInnovate. Ambiente acogedor, presenta especial interés en bases de datos.'),
 (2, 2, '2026-02-10', 'LLAMADA_SEGUIMIENTO', 'Llamada a Amaia. Reporte positivo. Laura está integrándose bien en el equipo de datos.'),
 (2, 2, '2026-02-18', 'VISITA_CENTRO_TRABAJO', 'Visita de María. Laura muestra buen desempeño técnico.'),
--- Estancia 3
 (3, 3, '2026-02-01', 'PRESENTACION_ALUMNO', 'Andrés se presenta en CloudTech. Muy motivado en cloud computing.'),
 (3, 3, '2026-02-05', 'INCIDENCIA', 'Andrés tuvo dificultades iniciales con Docker, pero se resolvieron rápidamente con ayuda del tutor.'),
 (3, 3, '2026-02-20', 'REUNION_PROFESORES', 'Reunión con el tutor empresa. Excelente adaptación, trabaja en contenedores de producción.'),
--- Estancia 4
 (4, 4, '2026-02-01', 'PRESENTACION_ALUMNO', 'Marta inicia en SysTeam. Buena integración inicial.'),
 (4, 4, '2026-02-09', 'LLAMADA_SEGUIMIENTO', 'Sofía reporta que Marta progresa adecuadamente en administración de sistemas.'),
--- Estancia 5
 (5, 5, '2026-02-01', 'PRESENTACION_ALUMNO', 'Pablo comienza su estancia en NetworkPro. Buen ambiente de integración.'),
 (5, 5, '2026-02-12', 'REUNIÓN_TUTOR_PRACTICAS', 'Reunión con Mikel. Pablo está aprendiendo mucho sobre infraestructuras de red.'),
--- Estancia 6
 (6, 6, '2026-02-01', 'PRESENTACION_ALUMNO', 'Sandra inicia en WebDevelop. Excelente primer día.'),
 (6, 6, '2026-02-15', 'VISITA_CENTRO_TRABAJO', 'Visita de Elena. Sandra muestra gran motivación en desarrollo web.'),
--- Estancia 10 (completada)
 (10, 10, '2025-11-01', 'PRESENTACION_ALUMNO', 'Nuria se presenta en CloudTech. Buena acogida del equipo.'),
 (10, 10, '2025-11-15', 'REUNION_TUTOR_PRACTICAS', 'Reunión con tutor empresa. Nuria progresa satisfactoriamente.'),
 (10, 10, '2025-12-10', 'EVALUACION', 'Evaluación final positiva. Nuria ha completado todos los objetivos de aprendizaje.');
@@ -362,33 +394,37 @@ INSERT INTO `notas_seguimiento` (`id_estancia`, `id_alumno`, `fecha`, `accion`, 
 -- 19. EVALUACIONES/CALIFICACIONES
 -- ====================================================================
 INSERT INTO `evaluaciones` (`id_estancia`, `id_modulo`, `nota_previa`, `nota_competencias_tecnicas`, `nota_competencias_transversales`, `nota_cuaderno`, `nota_fct_calculada`, `nota_final`, `observaciones`, `fecha_evaluacion`) VALUES
--- Estancia completada (10) - todos los módulos evaluados
 (10, 1, 8.50, 8.25, 8.00, 8.50, 8.25, 8.43, 'Excelente desempeño en programación estructurada', '2025-12-20'),
 (10, 2, 8.00, 7.75, 8.25, 8.00, 7.88, 7.97, 'Buen conocimiento en diseño de bases de datos', '2025-12-20'),
 (10, 3, 9.00, 8.50, 9.00, 9.00, 8.70, 8.94, 'Muy bueno en entornos de desarrollo', '2025-12-20'),
--- Estancia 1 (en curso, sin evaluación final)
 (1, 6, 8.75, 8.50, 8.25, 8.75, NULL, NULL, 'Evaluación parcial positiva', '2026-03-28'),
--- Estancia 2 (en curso)
 (2, 6, 8.50, 8.00, 8.50, 8.25, NULL, NULL, 'Evaluación parcial', '2026-03-28'),
--- Estancia 3 (en curso)
 (3, 7, 8.25, 8.75, 8.00, 8.50, NULL, NULL, 'Evaluación parcial en desarrollo web', '2026-04-15');
 
 -- ====================================================================
--- 20. LOGS DEL SISTEMA
+-- 20. INCIDENCIAS
 -- ====================================================================
-INSERT INTO `logs` (`id_usuario`, `nivel`, `tipo`, `mensaje`, `tabla_afectada`, `registro_id`, `ip`, `metodo_http`, `url`) VALUES
-(1, 'INFO', 'auth', 'Admin ha iniciado sesión', 'users', 1, '192.168.1.100', 'POST', '/api/auth/login'),
-(2, 'INFO', 'auth', 'Tutor María ha iniciado sesión', 'users', 2, '192.168.1.101', 'POST', '/api/auth/login'),
-(5, 'INFO', 'auth', 'Tutor empresa ha iniciado sesión', 'users', 5, '192.168.1.102', 'POST', '/api/auth/login'),
-(8, 'INFO', 'auth', 'Alumno David ha iniciado sesión', 'users', 8, '192.168.1.103', 'POST', '/api/auth/login'),
-(1, 'INFO', 'database', 'Se creó nueva estancia formativa', 'estancias_formativas', 1, '192.168.1.100', 'POST', '/api/estancias'),
-(2, 'INFO', 'database', 'Se registró nota de seguimiento', 'notas_seguimiento', 1, '192.168.1.101', 'POST', '/api/notas'),
-(1, 'INFO', 'database', 'Se registraron horas de estancia', 'estancias_formativas', 1, '192.168.1.100', 'PUT', '/api/estancias/1'),
-(5, 'INFO', 'database', 'Se creó evaluación de alumno', 'evaluaciones', 1, '192.168.1.102', 'POST', '/api/evaluaciones'),
-(2, 'INFO', 'database', 'Se añadió horario a estancia', 'horarios_estancia', 1, '192.168.1.101', 'POST', '/api/horarios'),
-(1, 'WARNING', 'system', 'Intento de acceso con credenciales inválidas', NULL, NULL, '192.168.1.105', 'POST', '/api/auth/login'),
-(1, 'INFO', 'email', 'Email de confirmación enviado a alumno', 'users', 8, '192.168.1.100', 'POST', '/api/auth/send-verification'),
-(1, 'INFO', 'database', 'Se completó estancia formativa', 'estancias_formativas', 10, '192.168.1.100', 'PUT', '/api/estancias/10/complete');
+INSERT INTO `incidencias` (`id_usuario`, `tipo`, `descripcion`, `estado`, `created_at`, `updated_at`) VALUES
+(1, 'MEJORA', 'Añadir filtros avanzados en la lista de estancias formativas.', 'ACTIVA', NOW(), NOW()),
+(2, 'PROBLEMA', 'No se muestra el tutor asignado en el detalle del alumno.', 'ACTIVA', NOW(), NOW()),
+(11, 'NO FUNCIONA', 'Error intermitente al registrar notas de seguimiento.', 'ACTIVA', NOW(), NOW());
+
+-- ====================================================================
+-- 21. LOGS DEL SISTEMA
+-- ====================================================================
+INSERT INTO `logs` (`id_usuario`, `nivel`, `tipo`, `mensaje`, `tabla_afectada`, `registro_id`, `ip`, `metodo_http`, `url`, `created_at`) VALUES
+(1, 'INFO', 'auth', 'Admin ha iniciado sesión', 'users', 1, '192.168.1.100', 'POST', '/api/auth/login', NOW()),
+(2, 'INFO', 'auth', 'Tutor María ha iniciado sesión', 'users', 2, '192.168.1.101', 'POST', '/api/auth/login', NOW()),
+(6, 'INFO', 'auth', 'Tutor empresa ha iniciado sesión', 'users', 6, '192.168.1.102', 'POST', '/api/auth/login', NOW()),
+(11, 'INFO', 'auth', 'Alumno David ha iniciado sesión', 'users', 11, '192.168.1.103', 'POST', '/api/auth/login', NOW()),
+(1, 'INFO', 'database', 'Se creó nueva estancia formativa', 'estancias_formativas', 1, '192.168.1.100', 'POST', '/api/estancias', NOW()),
+(2, 'INFO', 'database', 'Se registró nota de seguimiento', 'notas_seguimiento', 1, '192.168.1.101', 'POST', '/api/notas', NOW()),
+(1, 'INFO', 'database', 'Se registraron horas de estancia', 'estancias_formativas', 1, '192.168.1.100', 'PUT', '/api/estancias/1', NOW()),
+(6, 'INFO', 'database', 'Se creó evaluación de alumno', 'evaluaciones', 1, '192.168.1.102', 'POST', '/api/evaluaciones', NOW()),
+(2, 'INFO', 'database', 'Se añadió horario a estancia', 'horarios_estancia', 1, '192.168.1.101', 'POST', '/api/horarios', NOW()),
+(1, 'WARNING', 'system', 'Intento de acceso con credenciales inválidas', NULL, NULL, '192.168.1.105', 'POST', '/api/auth/login', NOW()),
+(1, 'INFO', 'email', 'Email de confirmación enviado a alumno', 'users', 11, '192.168.1.100', 'POST', '/api/auth/send-verification', NOW()),
+(1, 'INFO', 'database', 'Se completó estancia formativa', 'estancias_formativas', 10, '192.168.1.100', 'PUT', '/api/estancias/10/complete', NOW());
 
 -- ====================================================================
 -- RESUMEN DE DATOS CREADOS
@@ -400,13 +436,10 @@ INSERT INTO `logs` (`id_usuario`, `nivel`, `tipo`, `mensaje`, `tabla_afectada`, 
 -- ✓ 18 Relaciones RA-Competencias
 -- ✓ 17 Módulos formativos
 -- ✓ Múltiples relaciones Módulos-Competencias
--- ✓ 1 Admin + 4 Tutores de Centro + 5 Tutores de Empresa + 10 Alumnos
+-- ✓ 1 Admin + 4 Tutores de Centro + 5 Tutores de Empresa + 10 Alumnos (users)
+-- ✓ 4 Tutores (tabla tutores)
+-- ✓ Relaciones tutores-ciclos y alumnos-tutores mezcladas
 -- ✓ 10 Alumnos (tabla alumnos)
--- ✓ 7 Empresas colaboradoras
--- ✓ 12 Contactos de empresa
--- ✓ 10 Estancias formativas (9 en curso/planificada, 1 completada)
--- ✓ Horarios completos para todas las estancias
--- ✓ Seguimiento de competencias por semana
--- ✓ Notas de seguimiento y registros de eventos
--- ✓ Evaluaciones de alumnos
--- ✓ Logs del sistema
+-- ✓ 7 Empresas colaboradoras y 12 contactos
+-- ✓ 10 Estancias formativas con horarios, seguimientos, notas y evaluaciones
+-- ✓ Incidencias de ejemplo y logs de auditoría

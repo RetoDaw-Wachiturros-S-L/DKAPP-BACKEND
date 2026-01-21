@@ -33,4 +33,9 @@ class Alumno extends Model
     {
         return $this->belongsTo(Ciclo::class, 'id_ciclo');
     }
+
+    public function tutores()
+    {
+        return $this->belongsToMany(Tutor::class, 'alumnos_tutores', 'id_alumno', 'id_tutor');
+    }
 }

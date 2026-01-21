@@ -7,12 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Alumno;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -58,6 +57,11 @@ class User extends Authenticatable
     public function alumno()
     {
         return $this->hasOne(Alumno::class, 'id_user');
+    }
+
+    public function tutores()
+    {
+        return $this->belongsToMany(User::class, 'tutores_alumnos', 'id_alumno', 'id_tutor_centro');
     }
 
     /**
@@ -109,4 +113,3 @@ class User extends Authenticatable
         return $data;
     }
 }
-
