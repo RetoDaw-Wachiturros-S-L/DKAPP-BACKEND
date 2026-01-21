@@ -1,0 +1,31 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if (! Schema::hasTable('tutores_ciclos')) {
+            Schema::create('tutores_ciclos', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('id_tutor')->constrained('tutores')->cascadeOnDelete();
+                $table->foreignId('id_ciclo')->constrained('ciclos')->cascadeOnDelete();
+                $table->timestamp('created_at')->useCurrent();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('tutores_ciclos');
+    }
+};

@@ -23,4 +23,9 @@ class Ciclo extends Model
     {
         return $this->hasMany(Alumno::class, 'id_ciclo');
     }
+
+    public function tutores()
+    {
+        return $this->belongsToMany(Tutor::class, 'tutores_ciclos', 'id_ciclo', 'id_tutor');
+    }
 }

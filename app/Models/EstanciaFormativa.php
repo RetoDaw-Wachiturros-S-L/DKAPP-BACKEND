@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class EstanciaFormativa extends Model
 {
     protected $table = 'estancias_formativas';
+
     protected $fillable = [
         'id_alumno',
         'id_tutor_centro',
@@ -23,23 +24,33 @@ class EstanciaFormativa extends Model
         'estado',
     ];
 
-    public function alumno(){
+    public function alumno()
+    {
         return $this->belongsTo(Alumno::class, 'id_alumno', 'id');
     }
 
-    public function tutorCentro(){
+    public function tutorCentro()
+    {
         return $this->belongsTo(User::class, 'id_tutor_centro', 'id');
     }
 
-    public function tutorEmpresa(){
+    public function tutorEmpresa()
+    {
         return $this->belongsTo(User::class, 'id_tutor_empresa', 'id');
     }
 
-    public function empresa(){
+    public function empresa()
+    {
         return $this->belongsTo(Empresa::class, 'id_empresa', 'id');
     }
 
-    public function curso(){
+    public function curso()
+    {
         return $this->belongsTo(Curso::class, 'id_curso', 'id');
+    }
+
+    public function tutores()
+    {
+        return $this->belongsToMany(Tutor::class, 'alumnos_tutores', 'id_alumno', 'id_tutor');
     }
 }
