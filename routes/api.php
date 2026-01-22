@@ -14,4 +14,8 @@ Route::get('mis-alumnos/{idTutor}', [TutorCentroController::class, 'getAlumnos']
 // Obtener tutores de un alumno
 Route::get('mis-tutores/{idAlumno}', [TutorCentroController::class, 'getTutores']);
 
+
+
 Route::post('/incidencias', [IncidenciaController::class, 'store']);
+
+Route::get('/whoami', [IncidenciaController::class, 'whoami']);

@@ -11,7 +11,6 @@ class Incidencia extends Model
         'fecha_hora',
         'tipo_incidencia',
         'descripcion',
-        'inscripcion_id',
         'emitente_id', // se guarda automáticamente en backend
     ];
 

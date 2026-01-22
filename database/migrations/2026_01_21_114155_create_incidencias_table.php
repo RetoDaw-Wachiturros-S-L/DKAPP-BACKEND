@@ -11,18 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('incidencias', function (Blueprint $table) {
-            $table->id(); // PK autoincremental
-            $table->dateTime('fecha_hora');
-            $table->string('tipo_incidencia');
-            $table->text('descripcion');
-            $table->unsignedBigInteger('inscripcion_id'); // inscripción relacionada
-            $table->unsignedBigInteger('emitente_id');    // FK al usuario que rellena
-            $table->timestamps();
+        // Evitar error si la tabla ya existe (p. ej. creada desde un SQL import)
+        if (!Schema::hasTable('incidencias')) {
+            Schema::create('incidencias', function (Blueprint $table) {
+                $table->id(); // PK autoincremental
+                // Campos mínimos: fecha/hora, tipo, descripción
+                // Mantengo nombres compatibles con cambios previos
+                $table->dateTime('fecha_hora');
+                $table->string('tipo_incidencia');
+                $table->text('descripcion');
 
-            $table->foreign('inscripcion_id')->references('id')->on('inscripciones')->onDelete('cascade');
-            $table->foreign('emitente_id')->references('id')->on('users')->onDelete('cascade');
-        });
+                 // id_usuario: usuario que crea la incidencia (obligatorio)
+                 $table->unsignedBigInteger('id_usuario');    // FK al usuario que rellena
+                $table->timestamps();
+                // Añadir constraint para emitente (si existe la tabla users)
+                if (Schema::hasTable('users')) {
+                    $table->foreign('id_usuario')->references('id')->on('users')->onDelete('cascade');
+                }
+            });
+        }
 
     }
 
