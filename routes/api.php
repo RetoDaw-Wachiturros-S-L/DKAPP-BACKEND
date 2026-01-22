@@ -4,7 +4,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TutorCentroController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IncidenciaController;
-
+use App\Http\Controllers\AlumnoController;
 // Login
 Route::post('/login', [LoginController::class, 'login']);
 
@@ -19,3 +19,6 @@ Route::get('mis-tutores/{idAlumno}', [TutorCentroController::class, 'getTutores'
 Route::post('/incidencias', [IncidenciaController::class, 'store']);
 
 Route::get('/whoami', [IncidenciaController::class, 'whoami']);
+
+
+Route::get('/alumno/auto-completa', [AlumnoController::class, 'getAlumnoPorNombre']);
