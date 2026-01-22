@@ -7,11 +7,18 @@ use Illuminate\Http\Request;
 
 class IncidenciaController extends Controller
 {
-    // Listar todas las incidencias
+    // Listar todas las incidencias - Para admin (opc)
     public function index()
     {
-        $incidencias = Incidencia::with('emitente', 'inscripcion')->get();
+        // No forzamos la relación `inscripcion` si la tabla/Modelo no existe en la BD actual
+        $incidencias = Incidencia::with('emitente')->get();
         return response()->json($incidencias);
+    }
+
+    public function whoami()
+    {
+        $user = auth()->user();
+        return response()->json($user); 
     }
 
     // Crear nueva incidencia
@@ -19,27 +26,30 @@ class IncidenciaController extends Controller
     {
         $request->validate([
             'fecha_hora' => 'required|date',
-            'tipo_incidencia' => 'required|string|max:255',
-            'descripcion' => 'required|string',
-            'inscripcion_id' => 'required|exists:inscripciones,id',
+            'tipo_incidencia' => 'required|string',
+            'descripcion' => 'required|string', 
         ]);
 
-        $incidencia = Incidencia::create([
-            'fecha_hora' => $request->fecha_hora,
-            'tipo_incidencia' => $request->tipo_incidencia,
-            'descripcion' => $request->descripcion,
-            'inscripcion_id' => $request->inscripcion_id,
-            'emitente_id' => auth()->id(), // <- aquí guardamos automáticamente el ID de la persona logueada
-        ]);
+        try {
+            $incidencia = Incidencia::create([
+                'fecha_hora' => $request->fecha_hora,
+                'tipo_incidencia' => $request->tipo_incidencia,
+                'descripcion' => $request->descripcion,
+                'emitente_id' => $request->id_usuario 
+            ]);
 
-        return response()->json($incidencia, 201);
+            return response()->json($incidencia, 201);
+        } catch (\Exception $e) {
+            // Devolvemos el error real para que lo veas en la consola de Vue
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
 
     // Mostrar una incidencia específica
     public function show($id)
     {
-        $incidencia = Incidencia::with('emitente', 'inscripcion')->findOrFail($id);
+        $incidencia = Incidencia::with('emitente')->findOrFail($id);
         return response()->json($incidencia);
     }
 
@@ -52,10 +62,11 @@ class IncidenciaController extends Controller
             'fecha_hora' => 'sometimes|date',
             'tipo_incidencia' => 'sometimes|string|max:255',
             'descripcion' => 'sometimes|string',
-            'inscripcion_id' => 'sometimes|exists:inscripciones,id',
         ]);
+        // No permitimos actualizar el emitente desde el request por seguridad
+        $data = $request->only(['fecha_hora', 'tipo_incidencia', 'descripcion']);
 
-        $incidencia->update($request->all());
+        $incidencia->update($data);
         return response()->json($incidencia);
     }
 
