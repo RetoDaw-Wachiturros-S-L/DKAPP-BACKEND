@@ -64,6 +64,12 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'tutores_alumnos', 'id_alumno', 'id_tutor_centro');
     }
 
+    public function tutor()
+    {
+        return $this->hasOne(Tutor::class, 'id_user');
+    }
+
+
     /**
      * Relación con prácticas como tutor de centro
      */
@@ -79,12 +85,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(EstanciaFormativa::class, 'id_tutor_empresa', 'id');
     }
+    
 
     /**
      * Función que establece los campos a devolver para el frontend en un login
      */
     public function toLoginArray()
     {
+            // $codigoCentro = ($this->tutor && $this->tutor->centro) 
+            //         ? 
+            //         : null;
         $data = [
             'id' => $this->id,
             'nombre' => $this->nombre,
@@ -93,6 +103,7 @@ class User extends Authenticatable
             'telefono' => $this->telefono,
             'rol' => $this->rol,
             'activo' => $this->activo,
+            'cod_centro' =>$this->tutor->centro->codigo_centro ,
         ];
 
         // Si el usuario es alumno, incluir datos del ciclo

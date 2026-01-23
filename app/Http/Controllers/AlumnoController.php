@@ -36,7 +36,8 @@ class AlumnoController extends Controller
             
             'curso'     => $alumno->curso_actual, 
             'ciclo'     => $alumno->ciclo ? $alumno->ciclo->nombre : 'Sin ciclo',
-            'familia'   => $alumno->ciclo ? $alumno->ciclo->codigo : 'Sin familia', 
+            'familia'   => $alumno->ciclo ? $alumno->ciclo->familia_profesional : 'Sin familia', 
+            
         ]);
     }
 }

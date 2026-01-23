@@ -17,7 +17,10 @@ class Tutor extends Model
         'es_de_egibide',
         'poblacion',
     ];
-
+    public function centro()
+    {
+        return $this->belongsTo(Centro::class, 'id_centro');
+    }
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user');
