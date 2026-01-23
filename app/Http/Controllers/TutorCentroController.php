@@ -25,6 +25,8 @@ class TutorCentroController extends Controller
                 'fecha_inicio' => $estancia->fecha_inicio,
                 'fecha_fin' => $estancia->fecha_fin,
                 'estado' => $estancia->estado,
+                'id_tutor_empresa' => $estancia->id_tutor_empresa,
+                'id_tutor_centro' => $estancia->id_tutor_centro,
             ];
         }
 

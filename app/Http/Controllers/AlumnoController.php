@@ -11,10 +11,6 @@ class AlumnoController extends Controller
     {
         $term = $request->query('nombre_completo');
 
-        if (strlen($term) < 3) {
-            return response()->json(['error' => 'Término demasiado corto'], 400);
-        }
-
         // Cargamos 'user' y 'ciclo' (el ciclo nos dará el nombre y la familia)
         $alumno = Alumno::with(['user', 'ciclo'])
             ->whereHas('user', function($query) use ($term) {
@@ -26,6 +22,7 @@ class AlumnoController extends Controller
             return response()->json(['message' => 'No encontrado'], 404);
         }
 
+<<<<<<< HEAD
         return response()->json([
             'id'        => $alumno->id,
             'nombre'    => $alumno->user->nombre,
@@ -39,5 +36,19 @@ class AlumnoController extends Controller
             'familia'   => $alumno->ciclo ? $alumno->ciclo->familia_profesional : 'Sin familia', 
             
         ]);
+=======
+        return response()->json(Alumno::find($alumno->id)->InvokeObject());
+>>>>>>> e6498a92afbd6f5b34daaf60621a239ef5b2a2f7
+    }
+
+    public function getAlumnoById($id)
+    {
+        $alumno = Alumno::with(['user', 'ciclo'])->find($id);
+
+        if (!$alumno) {
+            return response()->json(['message' => 'No encontrado'], 404);
+        }
+
+        return response()->json(Alumno::find($id)->InvokeObject());
     }
 }
