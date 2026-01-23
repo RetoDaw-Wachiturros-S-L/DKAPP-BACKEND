@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TutorCentroController;
 use Illuminate\Support\Facades\Route;
@@ -22,3 +21,5 @@ Route::get('/whoami', [IncidenciaController::class, 'whoami']);
 
 
 Route::get('/alumno/auto-completa', [AlumnoController::class, 'getAlumnoPorNombre']);
+Route::get('/alumno/{id}', [AlumnoController::class, 'getAlumnoById']);
+

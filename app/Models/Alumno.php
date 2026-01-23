@@ -38,4 +38,19 @@ class Alumno extends Model
     {
         return $this->belongsToMany(Tutor::class, 'alumnos_tutores', 'id_alumno', 'id_tutor');
     }
+    public function InvokeObject()
+    {
+        return
+            [
+            'id'        => $this->id,
+            'nombre'    => $this->user->nombre,
+            'apellidos' => $this->user->apellidos,
+            'email'     => $this->user->email,
+            'telefono'  => $this->user->telefono,
+            'poblacion' => $this->poblacion,
+            'curso'     => $this->curso_actual,
+            'ciclo'     => $this->ciclo ? $this->ciclo->nombre : 'Sin ciclo',
+            'familia'   => $this->ciclo ? $this->ciclo->codigo : 'Sin familia',
+            ];
+    }
 }
