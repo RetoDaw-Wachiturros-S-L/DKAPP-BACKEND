@@ -17,10 +17,12 @@ return new class extends Migration
                 $table->string('codigo', 50)->unique()->comment('Código del ciclo formativo');
                 $table->string('nombre')->comment('Nombre del ciclo');
                 $table->integer('nivel')->comment('Nivel del ciclo (Superior, Medio, etc)');
+                $table->enum('familia', ['INFORMATICA', 'SANIDAD', 'ADMINISTRACION', 'ELECTRICIDAD', 'MECANICA', 'HOSTELERIA', 'IMAGEN_Y_SONIDO'])->comment('Familia profesional');
                 $table->boolean('activo')->default(true);
                 $table->timestamps();
 
                 $table->index('codigo');
+                $table->index('familia');
             });
         }
     }

@@ -11,23 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Evitar error si la tabla ya existe (p. ej. creada desde un SQL import)
         if (!Schema::hasTable('incidencias')) {
             Schema::create('incidencias', function (Blueprint $table) {
-                $table->id(); // PK autoincremental
-                // Campos mínimos: fecha/hora, tipo, descripción
-                // Mantengo nombres compatibles con cambios previos
-                $table->dateTime('fecha_hora');
-                $table->string('tipo_incidencia');
+                $table->id();
+                $table->foreignId('id_usuario')->constrained('users')->cascadeOnDelete();
+                $table->enum('tipo', ['MEJORA', 'NO FUNCIONA', 'PROBLEMA', 'OTRO'])->default('OTRO');
                 $table->text('descripcion');
-
-                 // id_usuario: usuario que crea la incidencia (obligatorio)
-                 $table->unsignedBigInteger('id_usuario');    // FK al usuario que rellena
+                $table->enum('estado', ['ACTIVA', 'INACTIVA', 'CERRADA'])->default('ACTIVA');
                 $table->timestamps();
-                // Añadir constraint para emitente (si existe la tabla users)
-                if (Schema::hasTable('users')) {
-                    $table->foreign('id_usuario')->references('id')->on('users')->onDelete('cascade');
-                }
+
+                $table->index('id_usuario');
+                $table->index('tipo');
+                $table->index('estado');
+                $table->index('created_at');
             });
         }
 

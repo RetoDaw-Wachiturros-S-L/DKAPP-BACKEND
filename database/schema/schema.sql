@@ -18,10 +18,12 @@ CREATE TABLE `ciclos` (
   `codigo` VARCHAR(50) UNIQUE NOT NULL,
   `nombre` VARCHAR(255) NOT NULL,
   `nivel` INT NOT NULL,
+  `familia` ENUM('INFORMATICA', 'SANIDAD', 'ADMINISTRACION', 'ELECTRICIDAD', 'MECANICA', 'HOSTELERIA', 'IMAGEN_Y_SONIDO') NOT NULL,
   `activo` BOOLEAN DEFAULT TRUE,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  INDEX `idx_codigo` (`codigo`)
+  INDEX `idx_codigo` (`codigo`),
+  INDEX `idx_familia` (`familia`)
 );
 
 -- ====================================================================
