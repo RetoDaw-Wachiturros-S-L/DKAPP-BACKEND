@@ -9,32 +9,34 @@ class AlumnoController extends Controller
 {
     public function getAlumnoPorNombre(Request $request)
     {
-        $request->validate([
-            'nombre_completo' => 'required|string',
-        ]);
+        $term = $request->query('nombre_completo');
 
-        $nombreCompleto = $request->nombre_completo;
+        if (strlen($term) < 3) {
+            return response()->json(['error' => 'Término demasiado corto'], 400);
+        }
 
-        // Buscar alumno donde la combinación nombre + ' ' + apellidos coincida
-        $alumno = Alumno::with('user')
-            ->whereHas('user', function($query) use ($nombreCompleto) {
-                $query->whereRaw("CONCAT(nombre, ' ', apellidos) = ?", [$nombreCompleto]);
+        // Cargamos 'user' y 'ciclo' (el ciclo nos dará el nombre y la familia)
+        $alumno = Alumno::with(['user', 'ciclo'])
+            ->whereHas('user', function($query) use ($term) {
+                $query->whereRaw("CONCAT(nombre, ' ', apellidos) LIKE ?", ["%{$term}%"]);
             })
             ->first();
 
         if (!$alumno) {
-            return response()->json(['error' => 'Alumno no encontrado'], 404);
+            return response()->json(['message' => 'No encontrado'], 404);
         }
 
         return response()->json([
-            'id' => $alumno->id,
-            'nombre' => $alumno->user->nombre,
+            'id'        => $alumno->id,
+            'nombre'    => $alumno->user->nombre,
             'apellidos' => $alumno->user->apellidos,
-            'email' => $alumno->user->email,
-            'telefono' => $alumno->user->telefono,
+            'email'     => $alumno->user->email,
+            'telefono'  => $alumno->user->telefono,
             'poblacion' => $alumno->poblacion,
-            'curso_actual' => $alumno->curso_actual,
-            'id_ciclo' => $alumno->id_ciclo,
+            
+            'curso'     => $alumno->curso_actual, 
+            'ciclo'     => $alumno->ciclo ? $alumno->ciclo->nombre : 'Sin ciclo',
+            'familia'   => $alumno->ciclo ? $alumno->ciclo->codigo : 'Sin familia', 
         ]);
     }
 }
