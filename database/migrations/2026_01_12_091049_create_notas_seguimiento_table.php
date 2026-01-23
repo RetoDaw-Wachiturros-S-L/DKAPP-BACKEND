@@ -17,7 +17,7 @@ return new class extends Migration
                 $table->foreignId('id_estancia')->constrained('estancias_formativas')->cascadeOnDelete();
                 $table->foreignId('id_alumno')->constrained('alumnos')->cascadeOnDelete();
                 $table->date('fecha');
-                $table->enum('accion', ['PRESENTACION_ALUMNO', 'LLAMADA_SEGUIMIENTO', 'VISITA_CENTRO_TRABAJO', 'REUNION_PROFESORES', 'REUNION_TUTOR_PRACTICAS', 'INCIDENCIA', 'EVALUACION', 'OTRA'])->default('OTRA');
+                $table->enum('accion', ['PRESENTACION_ALUMNO', 'LLAMADA_SEGUIMIENTO', 'VISITA_CENTRO_TRABAJO', 'REUNION_PROFESORES', 'REUNION_TUTOR_PRACTICAS', 'INCIDENCIA', 'EVALUACION', 'OTRA'])->default('EVALUACION');
                 $table->text('contenido')->comment('Contenido de la nota o seguimiento');
                 $table->timestamps();
 
