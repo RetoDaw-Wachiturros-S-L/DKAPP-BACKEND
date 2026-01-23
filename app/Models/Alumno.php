@@ -38,6 +38,12 @@ class Alumno extends Model
     {
         return $this->belongsToMany(Tutor::class, 'alumnos_tutores', 'id_alumno', 'id_tutor');
     }
+
+    public function entradasDiario() {
+        return $this->hasMany(Diario::class, 'id', 'numero_cuaderno');
+    }
+
+
     public function InvokeObject()
     {
         return
@@ -51,6 +57,7 @@ class Alumno extends Model
             'curso'     => $this->curso_actual,
             'ciclo'     => $this->ciclo ? $this->ciclo->nombre : 'Sin ciclo',
             'familia'   => $this->ciclo ? $this->ciclo->codigo : 'Sin familia',
+            'entradas_diario' => $this->entradasDiario,
             ];
     }
 }
