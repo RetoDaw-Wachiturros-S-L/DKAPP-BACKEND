@@ -22,7 +22,6 @@ class AlumnoController extends Controller
             return response()->json(['message' => 'No encontrado'], 404);
         }
 
-<<<<<<< HEAD
         return response()->json([
             'id'        => $alumno->id,
             'nombre'    => $alumno->user->nombre,
@@ -30,20 +29,18 @@ class AlumnoController extends Controller
             'email'     => $alumno->user->email,
             'telefono'  => $alumno->user->telefono,
             'poblacion' => $alumno->poblacion,
-            
-            'curso'     => $alumno->curso_actual, 
+
+            'curso'     => $alumno->curso_actual,
             'ciclo'     => $alumno->ciclo ? $alumno->ciclo->nombre : 'Sin ciclo',
-            'familia'   => $alumno->ciclo ? $alumno->ciclo->familia_profesional : 'Sin familia', 
-            
+            'familia'   => $alumno->ciclo ? $alumno->ciclo->familia_profesional : 'Sin familia',
+
         ]);
-=======
-        return response()->json(Alumno::find($alumno->id)->InvokeObject());
->>>>>>> e6498a92afbd6f5b34daaf60621a239ef5b2a2f7
+        // return response()->json(Alumno::find($alumno->id)->InvokeObject());
     }
 
     public function getAlumnoById($id)
     {
-        $alumno = Alumno::with(['user', 'ciclo'])->find($id);
+        $alumno = Alumno::with(['user', 'ciclo', 'notasSeguimiento'])->find($id);
 
         if (!$alumno) {
             return response()->json(['message' => 'No encontrado'], 404);
