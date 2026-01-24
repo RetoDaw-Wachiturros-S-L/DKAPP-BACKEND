@@ -27,7 +27,7 @@ class AlumnoController extends Controller
 
     public function getAlumnoById($id)
     {
-        $alumno = Alumno::with(['user', 'ciclo'])->find($id);
+        $alumno = Alumno::with(['user', 'ciclo', 'notasSeguimiento'])->find($id);
 
         if (!$alumno) {
             return response()->json(['message' => 'No encontrado'], 404);

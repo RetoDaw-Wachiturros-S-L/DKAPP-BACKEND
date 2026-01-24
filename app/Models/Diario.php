@@ -17,7 +17,33 @@ class Diario extends Model
         'contenido'
     ];
 
+    protected $appends = ['accion_legible'];
+
     public function alumno(){
-        return parent::belongsTo(Alumno::class, 'id_alumno', 'id');
+        return $this->belongsTo(Alumno::class, 'id_alumno', 'id');
     }
+
+    public function getAccionLegibleAttribute(){
+        return match ($this->accion) {
+            'PRESENTACION_ALUMNO'       => 'Presentación en la empresa',
+            'LLAMADA_SEGUIMIENTO'       => 'Reunión con la empresa',
+            'VISITA_CENTRO_TRABAJO'     => 'Visita al centro de trabajo',
+            'REUNION_PROFESORES'        => 'Reunion de profesores',
+            'REUNION_TUTOR_PRACTICAS'   => 'Reunion con tutor de practicas',
+            'INCIDENCIA'                => 'Incidencia',
+            'EVALUACION'                => 'Evaluacion',
+            default                     => ucfirst(str_replace('_', ' ', $this->accion)),
+        };
+    }
+
+    public static $acciones = [
+        'Presentación en la empresa'     => 'PRESENTACION_ALUMNO',
+        'Reunión con la empresa'         => 'LLAMADA_SEGUIMIENTO',
+        'Visita al centro de trabajo'    => 'VISITA_CENTRO_TRABAJO',
+        'Reunion de profesores'          => 'REUNION_PROFESORES',
+        'Reunion con tutor de practicas' => 'REUNION_TUTOR_PRACTICAS',
+        'Incidencia'                     => 'INCIDENCIA',
+        'Evaluacion'                     => 'EVALUACION',
+    ];
 }
+

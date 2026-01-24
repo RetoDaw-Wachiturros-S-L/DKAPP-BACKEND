@@ -18,17 +18,11 @@ class Alumno extends Model
         'poblacion',
     ];
 
-    /**
-     * Relación con User (un alumno pertenece a un usuario)
-     */
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user');
     }
 
-    /**
-     * Relación con Ciclo (un alumno pertenece a un ciclo)
-     */
     public function ciclo()
     {
         return $this->belongsTo(Ciclo::class, 'id_ciclo');
@@ -39,15 +33,20 @@ class Alumno extends Model
         return $this->belongsToMany(Tutor::class, 'alumnos_tutores', 'id_alumno', 'id_tutor');
     }
 
-    public function entradasDiario() {
-        return $this->hasMany(Diario::class, 'id', 'numero_cuaderno');
+    public function notasSeguimiento(){
+    // Hecho asi para devolver las acciones formateadas de Backend
+    return $this->hasMany(Diario::class, 'id_alumno', 'id')
+        ->select('id', 'id_alumno', 'fecha', 'accion', 'contenido');
     }
 
+    public function estanciaFormativa(){
+        return $this->hasOne(EstanciaFormativa::class, 'id_alumno', 'id');
+    }
 
     public function InvokeObject()
     {
         return
-            [
+        [
             'id'        => $this->id,
             'nombre'    => $this->user->nombre,
             'apellidos' => $this->user->apellidos,
@@ -57,7 +56,8 @@ class Alumno extends Model
             'curso'     => $this->curso_actual,
             'ciclo'     => $this->ciclo ? $this->ciclo->nombre : 'Sin ciclo',
             'familia'   => $this->ciclo ? $this->ciclo->codigo : 'Sin familia',
-            'entradas_diario' => $this->entradasDiario,
-            ];
+            'diario'    => $this->notasSeguimiento,
+            'estancia_formativa' => $this->estanciaFormativa,
+        ];
     }
 }

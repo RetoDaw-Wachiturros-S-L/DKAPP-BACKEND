@@ -4,6 +4,8 @@ use App\Http\Controllers\TutorCentroController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\AlumnoController;
+use App\Http\Controllers\DiarioController;
+
 // Login
 Route::post('/login', [LoginController::class, 'login']);
 
@@ -13,13 +15,12 @@ Route::get('mis-alumnos/{idTutor}', [TutorCentroController::class, 'getAlumnos']
 // Obtener tutores de un alumno
 Route::get('mis-tutores/{idAlumno}', [TutorCentroController::class, 'getTutores']);
 
-
-
+// Mandar incidencias a backend
 Route::post('/incidencias', [IncidenciaController::class, 'store']);
 
-Route::get('/whoami', [IncidenciaController::class, 'whoami']);
-
-
+// Obtener alumnos e info de uno solo (id)
 Route::get('/alumno/auto-completa', [AlumnoController::class, 'getAlumnoPorNombre']);
 Route::get('/alumno/{id}', [AlumnoController::class, 'getAlumnoById']);
 
+// Entradas de diario de alumno
+Route::post('alumno/nuevaEntrada', [DiarioController::class, 'nuevaEntrada']);
