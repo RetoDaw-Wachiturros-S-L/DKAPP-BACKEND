@@ -35,7 +35,7 @@ class AlumnoController extends Controller
             'familia'   => $alumno->ciclo ? $alumno->ciclo->familia_profesional : 'Sin familia',
 
         ]);
-        // return response()->json(Alumno::find($alumno->id)->InvokeObject());
+        return response()->json(Alumno::find($alumno->id)->InvokeObject());
     }
 
     public function getAlumnoById($id)

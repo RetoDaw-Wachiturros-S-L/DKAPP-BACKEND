@@ -85,15 +85,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(EstanciaFormativa::class, 'id_tutor_empresa', 'id');
     }
-    
+
 
     /**
      * Función que establece los campos a devolver para el frontend en un login
      */
     public function toLoginArray()
     {
-            // $codigoCentro = ($this->tutor && $this->tutor->centro) 
-            //         ? 
+            // $codigoCentro = ($this->tutor && $this->tutor->centro)
+            //         ?
             //         : null;
         $data = [
             'id' => $this->id,
@@ -103,7 +103,7 @@ class User extends Authenticatable
             'telefono' => $this->telefono,
             'rol' => $this->rol,
             'activo' => $this->activo,
-            'cod_centro' =>$this->tutor->centro->codigo_centro ,
+            'cod_centro' =>$this->tutor?->centro?->codigo_centro ,
         ];
 
         // Si el usuario es alumno, incluir datos del ciclo
