@@ -37,6 +37,7 @@ class LoginController extends Controller
                 'token_type' => 'Bearer',
                 'user' => $user->toLoginArray(),
             ]);
+
         } catch (\Exception $e) {
            return response()->json(['message' => 'Server error: ' . $e->getMessage()], 500);
         }

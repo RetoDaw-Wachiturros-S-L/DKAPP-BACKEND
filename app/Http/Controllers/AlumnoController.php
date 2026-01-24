@@ -22,7 +22,20 @@ class AlumnoController extends Controller
             return response()->json(['message' => 'No encontrado'], 404);
         }
 
-        return response()->json(Alumno::find($alumno->id)->InvokeObject());
+        return response()->json([
+            'id'        => $alumno->id,
+            'nombre'    => $alumno->user->nombre,
+            'apellidos' => $alumno->user->apellidos,
+            'email'     => $alumno->user->email,
+            'telefono'  => $alumno->user->telefono,
+            'poblacion' => $alumno->poblacion,
+
+            'curso'     => $alumno->curso_actual,
+            'ciclo'     => $alumno->ciclo ? $alumno->ciclo->nombre : 'Sin ciclo',
+            'familia'   => $alumno->ciclo ? $alumno->ciclo->familia_profesional : 'Sin familia',
+
+        ]);
+        // return response()->json(Alumno::find($alumno->id)->InvokeObject());
     }
 
     public function getAlumnoById($id)
