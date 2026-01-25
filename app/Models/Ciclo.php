@@ -28,4 +28,8 @@ class Ciclo extends Model
     {
         return $this->belongsToMany(Tutor::class, 'tutores_ciclos', 'id_ciclo', 'id_tutor');
     }
+
+    public function cursos(){
+        return $this->hasMany(Curso::class, 'id_ciclo');
+    }
 }

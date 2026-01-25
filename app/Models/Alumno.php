@@ -28,13 +28,34 @@ class Alumno extends Model
         return $this->belongsTo(Ciclo::class, 'id_ciclo');
     }
 
+    public function cursos() {
+        return $this->hasManyThrough(
+            Curso::class,
+            Ciclo::class,
+            'id',
+            'id_ciclo',
+            'id_ciclo',
+            'id'
+        );
+    }
+
+    public function modulos() {
+        return $this->hasManyThrough(
+            Modulo::class,
+            Curso::class,
+            'id_ciclo',
+            'id_curso',
+            'id_ciclo',
+            'id'
+        );
+    }
+
     public function tutores()
     {
         return $this->belongsToMany(Tutor::class, 'alumnos_tutores', 'id_alumno', 'id_tutor');
     }
 
     public function notasSeguimiento(){
-    // Hecho asi para devolver las acciones formateadas de Backend
     return $this->hasMany(Diario::class, 'id_alumno', 'id')
         ->select('id', 'id_alumno', 'fecha', 'accion', 'contenido');
     }
@@ -43,10 +64,13 @@ class Alumno extends Model
         return $this->hasOne(EstanciaFormativa::class, 'id_alumno', 'id');
     }
 
-    public function InvokeObject()
-    {
-        return
-        [
+    public function evaluaciones(){
+        return $this->hasMany(Evaluacion::class, 'id_modulo');
+    }
+
+
+    public function InvokeObject(){
+        return [
             'id'        => $this->id,
             'nombre'    => $this->user->nombre,
             'apellidos' => $this->user->apellidos,
@@ -56,6 +80,15 @@ class Alumno extends Model
             'curso'     => $this->curso_actual,
             'ciclo'     => $this->ciclo ? $this->ciclo->nombre : 'Sin ciclo',
             'familia'   => $this->ciclo ? $this->ciclo->codigo : 'Sin familia',
+            'cursos'    => $this->cursos,
+            'modulos'   => $this->modulos->map(function ($modulo) {
+                return [
+                    'id' => $modulo->id,
+                    'nombre' => $modulo->nombre,
+                    'id_curso' => $modulo->id_curso,
+                    'evaluaciones' => $modulo->evaluaciones ?? [],
+                ];
+            }),
             'diario'    => $this->notasSeguimiento,
             'estancia_formativa' => $this->estanciaFormativa,
         ];
