@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\DiarioController;
+use App\Http\Controllers\EmpresaController;
 
 // Login
 Route::post('/login', [LoginController::class, 'login']);
@@ -24,3 +25,10 @@ Route::get('/alumno/{id}', [AlumnoController::class, 'getAlumnoById']);
 
 // Entradas de diario de alumno
 Route::post('alumno/nuevaEntrada', [DiarioController::class, 'nuevaEntrada']);
+
+
+
+
+
+Route::get('/empresas', [EmpresaController::class, 'index']);
+
