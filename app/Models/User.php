@@ -68,6 +68,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Tutor::class, 'id_user');
     }
+    public function estanciasComoTutorEmpresa(){
+        return $this->hasMany(EstanciaFormativa::class, 'id_tutor_empresa');
+    }
 
 
     /**

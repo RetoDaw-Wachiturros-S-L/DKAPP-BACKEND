@@ -28,6 +28,7 @@ Route::post('alumno/nuevaEntrada', [DiarioController::class, 'nuevaEntrada']);
 
 
 
+Route::get('/empresa/{empresaId}/tutores', [EmpresaController::class, 'tutores']);
 
 
 Route::get('/empresas', [EmpresaController::class, 'index']);
