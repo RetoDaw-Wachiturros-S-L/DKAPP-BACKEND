@@ -64,7 +64,6 @@ class AlumnoController extends Controller
             'notas.*.nueva_evaluacion.observaciones' => 'nullable|string',
         ]);
 
-        $idAlumno = $request->idAlumno;
         $idEstancia = $request->idEstancia;
 
         foreach ($request->notas as $modulo) {
