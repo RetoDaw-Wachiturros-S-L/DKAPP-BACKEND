@@ -17,8 +17,8 @@ return new class extends Migration
                 $table->foreignId('id_estancia')->constrained('estancias_formativas')->cascadeOnDelete();
                 $table->foreignId('id_competencia')->constrained('competencias')->restrictOnDelete();
                 $table->integer('numero_semana')->comment('Número de semana en la que se trabaja');
-                $table->date('fecha_inicio');
-                $table->date('fecha_fin');
+                $table->date('fecha_inicio')->nullable();
+                $table->date('fecha_fin')->nullable();
                 $table->timestamps();
 
                 $table->unique(['id_estancia', 'id_competencia', 'numero_semana'], 'uk_estancia_comp_semana');

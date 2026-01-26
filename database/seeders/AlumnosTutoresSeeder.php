@@ -27,10 +27,7 @@ class AlumnosTutoresSeeder extends Seeder
         $rows = array_values(array_filter($rows, fn ($row) => $row['id_alumno'] && $row['id_tutor']));
 
         foreach ($rows as $row) {
-            DB::table('alumnos_tutores')->insert([
-                ...$row,
-                'created_at' => now(),
-            ]);
+            DB::table('alumnos_tutores')->insert($row);
         }
     }
 }

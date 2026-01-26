@@ -11,9 +11,7 @@ return new class extends Migration
         Schema::create('centros', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('codigo_centro')->unique();
-            $table->string('direccion')->nullable();
-            $table->string('poblacion')->nullable();
+            $table->string('codigo_centro', 50)->unique();
             $table->timestamps();
         });
     }

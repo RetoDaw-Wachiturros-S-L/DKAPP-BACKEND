@@ -20,8 +20,6 @@ return new class extends Migration {
             $table->enum('estado', ['ACTIVA', 'INACTIVA', 'SUSPENDIDA'])->default('ACTIVA');
             $table->timestamps();
 
-            $table->unique('cif');
-            $table->index('nombre');
             $table->index('estado');
         });
     }

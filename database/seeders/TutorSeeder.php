@@ -9,12 +9,16 @@ class TutorSeeder extends Seeder
 {
     public function run(): void
     {
+        // Obtener el ID del primer centro (Egibide Arriaga)
+        $centroId = DB::table('centros')->where('codigo_centro', 'EGI-ARR')->value('id');
+
         $tutores = [
             [
                 'id_user' => 2, // María García López
                 'dni' => '11111111A',
                 'es_de_egibide' => true,
                 'poblacion' => 'Vitoria-Gasteiz',
+                'id_centro' => $centroId,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -23,6 +27,7 @@ class TutorSeeder extends Seeder
                 'dni' => '22222222B',
                 'es_de_egibide' => true,
                 'poblacion' => 'Vitoria-Gasteiz',
+                'id_centro' => $centroId,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

@@ -7,26 +7,18 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('modulo_competencia', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->string('apellidos');
-            $table->string('email')->unique();
-            $table->string('telefono', 20)->nullable();
-            $table->enum('rol', ['ADMIN', 'TUTOR_CENTRO', 'TUTOR_EMPRESA', 'ALUMNO']);
-            $table->string('password');
-            $table->boolean('activo')->default(true);
-            $table->timestamp('email_verified_at')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+            $table->foreignId('id_modulo')->constrained('modulos')->onDelete('cascade');
+            $table->foreignId('id_competencia')->constrained('competencias')->onDelete('cascade');
+            $table->timestamp('created_at')->useCurrent();
 
-            $table->index('email');
-            $table->index('rol');
+            $table->unique(['id_modulo', 'id_competencia']);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('modulo_competencia');
     }
 };

@@ -12,17 +12,25 @@ class IncidenciaSeeder extends Seeder
         $incidencias = [
             [
                 'id_usuario' => 1, // Admin
-                'tipo' => 'MEJORA',
+                'fecha_hora' => now()->subDays(5),
+                'tipo_incidencia' => 'MEJORA',
                 'descripcion' => 'Añadir filtros avanzados en la lista de estancias formativas.',
-                'estado' => 'ACTIVA',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'id_usuario' => 2, // María
-                'tipo' => 'PROBLEMA',
+                'fecha_hora' => now()->subDays(2),
+                'tipo_incidencia' => 'PROBLEMA',
                 'descripcion' => 'No se muestra el tutor asignado en el detalle del alumno.',
-                'estado' => 'ACTIVA',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_usuario' => 3, // Juan
+                'fecha_hora' => now()->subDay(),
+                'tipo_incidencia' => 'NO FUNCIONA',
+                'descripcion' => 'El botón de exportar a PDF no responde en la vista de evaluaciones.',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

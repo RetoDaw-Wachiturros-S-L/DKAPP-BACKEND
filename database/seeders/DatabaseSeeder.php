@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,           // Usuarios (necesario para alumnos y tutores)
             CicloSeeder::class,          // Ciclos formativos
-            TutorSeeder::class,          // Tutores (depende de users)
+            CentroSeeder::class,         // Centros educativos (necesario para tutores)
+            TutorSeeder::class,          // Tutores (depende de users y centros)
         ]);
 
         // 2. Tablas que dependen de ciclos

@@ -14,16 +14,13 @@ return new class extends Migration
         if (!Schema::hasTable('incidencias')) {
             Schema::create('incidencias', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('id_usuario')->constrained('users')->cascadeOnDelete();
-                $table->enum('tipo', ['MEJORA', 'NO FUNCIONA', 'PROBLEMA', 'OTRO'])->default('OTRO');
+                $table->dateTime('fecha_hora');
+                $table->string('tipo_incidencia');
                 $table->text('descripcion');
-                $table->enum('estado', ['ACTIVA', 'INACTIVA', 'CERRADA'])->default('ACTIVA');
+                $table->foreignId('id_usuario')->constrained('users')->cascadeOnDelete();
                 $table->timestamps();
 
                 $table->index('id_usuario');
-                $table->index('tipo');
-                $table->index('estado');
-                $table->index('created_at');
             });
         }
 
