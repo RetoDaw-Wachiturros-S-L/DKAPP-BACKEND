@@ -9,7 +9,6 @@ use App\Http\Controllers\EmpresaController;
 use Laravel\Mcp\Enums\Role;
 use App\Http\Controllers\CompetenciaController;
 use App\Http\Controllers\EstanciaFormativaController;
-use App\Http\Controllers\EstanciaCompetenciaController;
 
 
 // Login
@@ -26,8 +25,6 @@ Route::post('/incidencias', [IncidenciaController::class, 'store']);
 
 // Obtener alumnos e info de uno solo (id)
 Route::get('/alumno/auto-completa', [AlumnoController::class, 'getAlumnoPorNombre']);
-Route::get('/alumno/{id}', [AlumnoController::class, 'getAlumnoById']);
-Route::get('/user-alumno/{id}', [AlumnoController::class, 'getAlumnoByUserId']);
 
 // Entradas de diario de alumno
 Route::post('alumno/nuevaEntrada', [DiarioController::class, 'nuevaEntrada']);
@@ -39,5 +36,7 @@ Route::post('alumno/nuevas-notas', [AlumnoController::class, 'nuevasNotas']);
 
 Route::get('/competencias', [CompetenciaController::class, 'index']);
 
+// Rutas de Estancias Formativas
 Route::post('/estancias', [EstanciaFormativaController::class, 'store']);
-Route::post('/estancia-competencias/bulk', [EstanciaCompetenciaController::class, 'storeBulk']);
+Route::get('/alumno/{id}', [AlumnoController::class, 'getAlumnoById']);
+Route::get('/user-alumno/{id}', [AlumnoController::class, 'getAlumnoByUserId']);

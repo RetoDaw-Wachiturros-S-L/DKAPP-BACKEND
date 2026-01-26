@@ -9,19 +9,8 @@ class EstanciaFormativa extends Model
     protected $table = 'estancias_formativas';
 
     protected $fillable = [
-        'id_alumno',
-        'id_tutor_centro',
-        'id_tutor_empresa',
-        'fecha_inicio',
-        'fecha_fin',
-        'empresa',
-        'direccion_empresa',
-        'ciudad_empresa',
-        'codigo_postal_empresa',
-        'telefono_empresa',
-        'actividad_empresa',
-        'horario_practicas',
-        'estado',
+        'id_alumno', 'id_empresa', 'id_tutor_empresa', 'id_tutor_centro', 
+        'id_curso', 'fecha_inicio', 'fecha_fin', 'horas_totales', 'horas_realizadas', 'estado', 'observaciones'
     ];
 
     public function alumno()
@@ -47,6 +36,14 @@ class EstanciaFormativa extends Model
     public function curso()
     {
         return $this->belongsTo(Curso::class, 'id_curso', 'id');
+    }
+        // app/Models/EstanciaFormativa.php
+
+    public function competencias() {
+        // Ajusta 'seguimiento_competencias' si el nombre de la tabla intermedia es otro
+        return $this->belongsToMany(Competencia::class, 'seguimiento_competencias', 'id_estancia', 'id_competencia')
+                    ->withPivot('fecha_inicio', 'fecha_fin')
+                    ->withTimestamps();
     }
 
     public function tutores()
