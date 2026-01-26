@@ -7,6 +7,10 @@ use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\DiarioController;
 use App\Http\Controllers\EmpresaController;
 use Laravel\Mcp\Enums\Role;
+use App\Http\Controllers\CompetenciaController;
+use App\Http\Controllers\EstanciaFormativaController;
+use App\Http\Controllers\EstanciaCompetenciaController;
+
 
 // Login
 Route::post('/login', [LoginController::class, 'login']);
@@ -31,3 +35,8 @@ Route::get('/empresa/{empresaId}/tutores', [EmpresaController::class, 'tutores']
 Route::get('/empresas', [EmpresaController::class, 'index']);
 
 Route::post('alumno/nuevas-notas', [AlumnoController::class, 'nuevasNotas']);
+
+Route::get('/competencias', [CompetenciaController::class, 'index']);
+
+Route::post('/estancias', [EstanciaFormativaController::class, 'store']);
+Route::post('/estancia-competencias/bulk', [EstanciaCompetenciaController::class, 'storeBulk']);
