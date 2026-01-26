@@ -155,6 +155,20 @@ jobs:
             --output text)
           
           for INSTANCE_ID in $INSTANCE_IDS; do
+            echo "Running database migrations on instance: $INSTANCE_ID"
+            aws ssm send-command \
+              --instance-ids "$INSTANCE_ID" \
+              --document-name "AWS-RunShellScript" \
+              --parameters 'commands=["cd /var/app/current && php artisan migrate --force"]' \
+              --region ${{ env.AWS_REGION }}
+            
+            echo "Seeding database on instance: $INSTANCE_ID"
+            aws ssm send-command \
+              --instance-ids "$INSTANCE_ID" \
+              --document-name "AWS-RunShellScript" \
+              --parameters 'commands=["cd /var/app/current && php artisan db:seed --force"]' \
+              --region ${{ env.AWS_REGION }}
+            
             echo "Clearing cache on instance: $INSTANCE_ID"
             aws ssm send-command \
               --instance-ids "$INSTANCE_ID" \
