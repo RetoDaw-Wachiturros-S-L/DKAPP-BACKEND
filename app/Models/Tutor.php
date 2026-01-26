@@ -13,6 +13,7 @@ class Tutor extends Model
 
     protected $fillable = [
         'id_user',
+        'id_centro',
         'dni',
         'es_de_egibide',
         'poblacion',

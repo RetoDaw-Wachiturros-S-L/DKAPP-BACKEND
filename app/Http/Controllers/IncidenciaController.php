@@ -35,7 +35,7 @@ class IncidenciaController extends Controller
                 'fecha_hora' => $request->fecha_hora,
                 'tipo_incidencia' => $request->tipo_incidencia,
                 'descripcion' => $request->descripcion,
-                'emitente_id' => $request->id_usuario 
+                'id_usuario' => $request->id_usuario 
             ]);
 
             return response()->json($incidencia, 201);

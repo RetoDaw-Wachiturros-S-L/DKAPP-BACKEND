@@ -11,12 +11,12 @@ class Incidencia extends Model
         'fecha_hora',
         'tipo_incidencia',
         'descripcion',
-        'emitente_id', // se guarda automáticamente en backend
+        'id_usuario', // se guarda automáticamente en backend
     ];
 
     public function emitente()
     {
-        return $this->belongsTo(User::class, 'emitente_id');
+        return $this->belongsTo(User::class, 'id_usuario');
     }
 
     public function inscripcion()

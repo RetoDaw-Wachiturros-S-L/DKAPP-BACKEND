@@ -18,7 +18,7 @@ class LoginController extends Controller
             }
 
             // Find user by email and load relations
-            $user = User::with(['alumno.ciclo'])
+            $user = User::with(['alumno.ciclo', 'tutor.centro'])
                 ->where('email', $credentials['email'])
                 ->first();
 
@@ -30,7 +30,7 @@ class LoginController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
 
             // Asegurar que las relaciones están cargadas antes de serializar
-            $user->load(['alumno.ciclo']);
+            $user->load(['alumno.ciclo', 'tutor.centro']);
 
             return response()->json([
                 'token' => $token,

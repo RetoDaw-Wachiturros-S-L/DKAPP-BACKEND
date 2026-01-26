@@ -14,6 +14,7 @@ class Ciclo extends Model
         'nombre',
         'nivel',
         'activo',
+        'familia',
     ];
 
     /**

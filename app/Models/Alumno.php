@@ -79,7 +79,7 @@ class Alumno extends Model
             'poblacion' => $this->poblacion,
             'curso'     => $this->curso_actual,
             'ciclo'     => $this->ciclo ? $this->ciclo->nombre : 'Sin ciclo',
-            'familia'   => $this->ciclo ? $this->ciclo->familia_profesional : 'Sin familia',
+            'familia'   => $this->ciclo ? $this->ciclo->familia : 'Sin familia',
             'cursos'    => $this->cursos,
             'modulos'   => $this->modulos->map(function ($modulo) {
                 return [
