@@ -425,7 +425,16 @@ INSERT INTO `logs` (`id_usuario`, `nivel`, `tipo`, `mensaje`, `tabla_afectada`, 
 (1, 'WARNING', 'system', 'Intento de acceso con credenciales inválidas', NULL, NULL, '192.168.1.105', 'POST', '/api/auth/login', NOW()),
 (1, 'INFO', 'email', 'Email de confirmación enviado a alumno', 'users', 11, '192.168.1.100', 'POST', '/api/auth/send-verification', NOW()),
 (1, 'INFO', 'database', 'Se completó estancia formativa', 'estancias_formativas', 10, '192.168.1.100', 'PUT', '/api/estancias/10/complete', NOW());
+--Centros 22
 
+
+
+INSERT INTO centros (nombre, codigo_centro, created_at, updated_at) VALUES
+('Centro Egibide Arriaga', '0001', NOW(), NOW()),
+('Centro Egibide Jesus Obrero', '0002', NOW(), NOW()),
+('Centro Egibide Molinuevo', '0003', NOW(), NOW());
+UPDATE tutores
+SET id_centro = 1;
 -- ====================================================================
 -- RESUMEN DE DATOS CREADOS
 -- ====================================================================

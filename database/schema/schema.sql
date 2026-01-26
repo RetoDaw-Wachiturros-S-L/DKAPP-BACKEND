@@ -267,7 +267,7 @@ CREATE TABLE `estancias_formativas` (
   `id_curso` INT NOT NULL,
   `fecha_inicio` DATE NULL,
   `fecha_fin` DATE  NULL,
-  `horas_totales` INT NOT NULL,
+  `horas_totales` INT NULL,
   `horas_realizadas` INT DEFAULT 0,
   `estado` ENUM('PLANIFICADA', 'EN_CURSO', 'COMPLETADA', 'CANCELADA') DEFAULT 'PLANIFICADA',
   `observaciones` TEXT,
@@ -424,21 +424,20 @@ CREATE TABLE `logs` (
 
 -- Tabla de centros
 
-
-CREATE TABLE `centros` (
-  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(255) NOT NULL,
-  `codigo_centro` varchar(50) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE centros (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR(255) NOT NULL,
+  codigo_centro VARCHAR(50) NOT NULL,
+  created_at TIMESTAMP NULL DEFAULT NULL,
+  updated_at TIMESTAMP NULL DEFAULT NULL,
+  PRIMARY KEY (id)
 );
-ALTER TABLE `tutores`
-  ADD CONSTRAINT `tutores_id_centro_foreign`
-  FOREIGN KEY (`id_centro`) REFERENCES `centros`(`id`)
-  ON DELETE SET NULL
-  ON UPDATE CASCADE;
-
+ALTER TABLE tutores
+ADD COLUMN id_centro BIGINT UNSIGNED NOT NULL;
+ALTER TABLE tutores
+ADD CONSTRAINT fk_tutores_centro
+FOREIGN KEY (id_centro)
+REFERENCES centros(id);
 
 -- ====================================================================
 -- FIN DEL ESQUEMA
