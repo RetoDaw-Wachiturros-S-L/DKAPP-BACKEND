@@ -379,20 +379,19 @@ CREATE TABLE `evaluaciones` (
 -- ====================================================================
 -- Almacena las incidencias, reportes y sugerencias de los usuarios
 -- Permite a los usuarios reportar problemas, solicitar mejoras y otros problemas del sistema
+
 CREATE TABLE `incidencias` (
-  `id` INT PRIMARY KEY AUTO_INCREMENT,
-  `id_usuario` BIGINT NOT NULL,
-  `tipo` ENUM('MEJORA', 'NO FUNCIONA', 'PROBLEMA', 'OTRO') NOT NULL DEFAULT 'OTRO',
-  `descripcion` TEXT NOT NULL,
-  `estado` ENUM('ACTIVA', 'INACTIVA', 'CERRADA') DEFAULT 'ACTIVA',
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`id_usuario`) REFERENCES `users`(`id`) ON DELETE CASCADE,
-  INDEX `idx_usuario` (`id_usuario`),
-  INDEX `idx_tipo` (`tipo`),
-  INDEX `idx_estado` (`estado`),
-  INDEX `idx_fecha` (`created_at`)
+  `id` bigint UNSIGNED NOT NULL,
+  `fecha_hora` datetime NOT NULL,
+  `tipo_incidencia` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `emitente_id` bigint UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 );
+ALTER TABLE `incidencias`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `incidencias_emitente_id_foreign` (`emitente_id`);
 
 -- ====================================================================
 -- 17. LOGS DEL SISTEMA
