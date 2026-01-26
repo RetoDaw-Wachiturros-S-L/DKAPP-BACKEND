@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Alumno;
 use App\Models\Evaluacion;
+use App\Models\User;
 
 class AlumnoController extends Controller
 {
@@ -33,6 +34,7 @@ class AlumnoController extends Controller
     }
 
     public function getAlumnoById($id){
+
         $alumno = Alumno::with([
             'user',
             'ciclo',
@@ -41,6 +43,23 @@ class AlumnoController extends Controller
             'notasSeguimiento',
             'estanciaFormativa'
         ])->find($id);
+
+        if (!$alumno) {
+            return response()->json(['message' => 'No encontrado'], 404);
+        }
+
+        return response()->json($alumno->InvokeObject());
+    }
+
+    public function getAlumnoByUserId($id){
+        $alumno = Alumno::with([
+            'user',
+            'ciclo',
+            'cursos',
+            'modulos.evaluaciones',
+            'notasSeguimiento',
+            'estanciaFormativa'
+        ])->where('id_user', $id)->first();
 
         if (!$alumno) {
             return response()->json(['message' => 'No encontrado'], 404);
@@ -64,7 +83,6 @@ class AlumnoController extends Controller
             'notas.*.nueva_evaluacion.observaciones' => 'nullable|string',
         ]);
 
-        $idAlumno = $request->idAlumno;
         $idEstancia = $request->idEstancia;
 
         foreach ($request->notas as $modulo) {
