@@ -9,6 +9,7 @@ class Evaluacion extends Model
     protected $table = "evaluaciones";
 
     protected $fillable = [
+        'id_estancia',
         'id_modulo',
         'nota_previa',
         'nota_competencias_tecnicas',
@@ -17,6 +18,7 @@ class Evaluacion extends Model
         'nota_fct_calculada',
         'nota_final',
         'observaciones',
+        'fecha_evaluacion',
     ];
 
     public function modulo() {

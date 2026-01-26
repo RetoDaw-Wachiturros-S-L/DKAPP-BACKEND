@@ -68,16 +68,20 @@ class AlumnoController extends Controller
         return response()->json($alumno->InvokeObject());
     }
 
-    public function nuevasNotas(Request $request) {
+    public function nuevasNotas(Request $request){
         $request->validate([
             'idAlumno' => 'required|integer|exists:alumnos,id',
             'idEstancia' => 'required|integer|exists:estancias_formativas,id',
             'notas' => 'required|array|min:1',
             'notas.*.id_modulo' => 'required|integer|exists:modulos,id',
+
+            // Evaluaciones existentes
             'notas.*.evaluaciones' => 'sometimes|array',
             'notas.*.evaluaciones.*.id' => 'required_with:notas.*.evaluaciones|integer|exists:evaluaciones,id',
             'notas.*.evaluaciones.*.nota_previa' => 'required_with:notas.*.evaluaciones|numeric|min:0|max:10',
             'notas.*.evaluaciones.*.observaciones' => 'nullable|string',
+
+            // Nueva evaluación
             'notas.*.nueva_evaluacion' => 'sometimes|array',
             'notas.*.nueva_evaluacion.nota_previa' => 'nullable|numeric|min:0|max:10',
             'notas.*.nueva_evaluacion.observaciones' => 'nullable|string',
@@ -88,29 +92,34 @@ class AlumnoController extends Controller
         foreach ($request->notas as $modulo) {
 
             // Actualizar evaluaciones existentes
-            if (isset($modulo['evaluaciones'])) {
+            if (!empty($modulo['evaluaciones'])) {
                 foreach ($modulo['evaluaciones'] as $eva) {
                     Evaluacion::where('id', $eva['id'])
                         ->update([
                             'nota_previa' => $eva['nota_previa'],
+                            'nota_competencias_transversales' => $eva['nota_competencias_transversales'] ?? null,
+                            'nota_fct_calculada' => $eva['nota_fct_calculada'] ?? null,
                             'observaciones' => $eva['observaciones'],
                             'updated_at' => now(),
                         ]);
                 }
             }
 
-            if (isset($modulo['nueva_evaluacion'])) {
-                // En caso de que las notas vengasn vacias, se salta la create
-                if (
-                        $modulo['nueva_evaluacion']['nota_previa'] === null &&
-                        $modulo['nueva_evaluacion']['observaciones'] === null
-                    ) continue;
+            // Crear nueva evaluación
+            if (!empty($modulo['nueva_evaluacion'])) {
 
+                // Evitar crear evaluaciones vacías
+                if (
+                    $modulo['nueva_evaluacion']['nota_previa'] === null &&
+                    empty($modulo['nueva_evaluacion']['observaciones'])
+                ) continue;
 
                 Evaluacion::create([
                     'id_estancia' => $idEstancia,
                     'id_modulo' => $modulo['id_modulo'],
                     'nota_previa' => $modulo['nueva_evaluacion']['nota_previa'],
+                    'nota_competencias_transversales' => $modulo['nueva_evaluacion']['nota_competencias_transversales'] ?? null,
+                    'nota_fct_calculada' => $modulo['nueva_evaluacion']['nota_fct_calculada'] ?? null,
                     'observaciones' => $modulo['nueva_evaluacion']['observaciones'],
                     'fecha_evaluacion' => now(),
                 ]);
