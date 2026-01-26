@@ -420,6 +420,26 @@ CREATE TABLE `logs` (
   INDEX `idx_fecha` (`created_at`)
 );
 
+
+
+-- Tabla de centros
+
+
+CREATE TABLE `centros` (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) NOT NULL,
+  `codigo_centro` varchar(50) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+ALTER TABLE `tutores`
+  ADD CONSTRAINT `tutores_id_centro_foreign`
+  FOREIGN KEY (`id_centro`) REFERENCES `centros`(`id`)
+  ON DELETE SET NULL
+  ON UPDATE CASCADE;
+
+
 -- ====================================================================
 -- FIN DEL ESQUEMA
 -- ====================================================================
