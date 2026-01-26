@@ -27,6 +27,7 @@ Route::post('/incidencias', [IncidenciaController::class, 'store']);
 // Obtener alumnos e info de uno solo (id)
 Route::get('/alumno/auto-completa', [AlumnoController::class, 'getAlumnoPorNombre']);
 Route::get('/alumno/{id}', [AlumnoController::class, 'getAlumnoById']);
+Route::get('/user-alumno/{id}', [AlumnoController::class, 'getAlumnoByUserId']);
 
 // Entradas de diario de alumno
 Route::post('alumno/nuevaEntrada', [DiarioController::class, 'nuevaEntrada']);
