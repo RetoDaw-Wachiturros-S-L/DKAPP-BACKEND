@@ -385,13 +385,13 @@ CREATE TABLE `incidencias` (
   `fecha_hora` datetime NOT NULL,
   `tipo_incidencia` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcion` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `emitente_id` bigint UNSIGNED NOT NULL,
+  `id_usuario` bigint UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 );
 ALTER TABLE `incidencias`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `incidencias_emitente_id_foreign` (`emitente_id`);
+  ADD KEY `incidencias_id_usuario_foreign` (`id_usuario`);
 
 -- ====================================================================
 -- 17. LOGS DEL SISTEMA
