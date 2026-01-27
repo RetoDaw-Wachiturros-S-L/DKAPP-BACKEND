@@ -11,7 +11,13 @@ class TutorCentroController extends Controller
     {
         $tutor = User::find($idTutor);
         // Obtiene todos los alumnos , practicas y empresas de los alumons de ese tutor
-        $estanciaFormativa = $tutor->practicasTutorCentro()->with('alumno.user', 'empresa', 'curso')->get();
+
+        if (!$tutor) return response()->json(['Error:' => 'ID de tutor invalido'], 405);
+
+        $estanciaFormativa = $tutor->practicasTutorCentro()
+                ->with('alumno.user', 'empresa', 'curso')->get();
+
+        $alumnos = [];
 
         foreach ($estanciaFormativa as $estancia) {
             $alumnos[] = [
@@ -29,7 +35,6 @@ class TutorCentroController extends Controller
                 'id_tutor_centro' => $estancia->id_tutor_centro,
             ];
         }
-
         return response()->json($alumnos);
     }
 
