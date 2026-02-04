@@ -51,7 +51,7 @@ fi
 # Instalar PHP 8.5 y extensiones
 if ! dpkg -l | grep -q php8.5; then
     log_info "Instalando dependencias para PHP..."
-    if apt install -y wget lsb-release >> $LOG_FILE 2>&1; then
+    if apt install -y wget lsb-release gnupg >> $LOG_FILE 2>&1; then
         log_success "Dependencias instaladas."
     else
         log_fail "Error instalando dependencias para PHP."
