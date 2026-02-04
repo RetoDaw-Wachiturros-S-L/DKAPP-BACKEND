@@ -50,15 +50,45 @@ fi
 
 # Instalar PHP 8.5 y extensiones
 if ! dpkg -l | grep -q php8.5; then
+    log_info "Instalando dependencias para PHP..."
+    if apt install -y wget lsb-release >> $LOG_FILE 2>&1; then
+        log_success "Dependencias instaladas."
+    else
+        log_fail "Error instalando dependencias para PHP."
+        exit 1
+    fi
+    
+    log_info "Agregando clave GPG para repositorio PHP..."
+    if wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - >> $LOG_FILE 2>&1; then
+        log_success "Clave GPG agregada."
+    else
+        log_fail "Error agregando clave GPG."
+        exit 1
+    fi
+    
+    log_info "Agregando repositorio PHP..."
+    if echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list >> $LOG_FILE 2>&1; then
+        log_success "Repositorio PHP agregado."
+    else
+        log_fail "Error agregando repositorio PHP."
+        exit 1
+    fi
+    
+    log_info "Actualizando lista de paquetes para PHP..."
+    if apt update >> $LOG_FILE 2>&1; then
+        log_success "Lista de paquetes actualizada para PHP."
+    else
+        log_fail "Error actualizando lista de paquetes para PHP."
+        exit 1
+    fi
+    
     log_info "Instalando PHP 8.5 y extensiones..."
-    if apt install -y wget lsb-release >> $LOG_FILE 2>&1 && \
-       wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - >> $LOG_FILE 2>&1 && \
-       echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list >> $LOG_FILE 2>&1 && \
-       apt update >> $LOG_FILE 2>&1 && \
-       apt install -y php8.5 php8.5-cli php8.5-common php8.5-mysql php8.5-zip php8.5-gd php8.5-mbstring php8.5-curl php8.5-xml php8.5-bcmath >> $LOG_FILE 2>&1; then
+    # Quitar redirect para ver progreso en consola
+    if apt install -y php8.5 php8.5-cli php8.5-common php8.5-mysql php8.5-zip php8.5-gd php8.5-mbstring php8.5-curl php8.5-xml php8.5-bcmath; then
         log_success "PHP 8.5 y extensiones instalados."
     else
         log_fail "Error al instalar PHP 8.5."
+        exit 1
     fi
 else
     log_info "PHP 8.5 ya está instalado."
@@ -67,7 +97,8 @@ fi
 # Instalar MySQL (MariaDB en Debian)
 if ! dpkg -l | grep -q mariadb-server; then
     log_info "Instalando MariaDB Server..."
-    if apt install -y mariadb-server >> $LOG_FILE 2>&1; then
+    # Quitar redirect para ver progreso
+    if apt install -y mariadb-server; then
         log_success "MariaDB Server instalado."
         systemctl enable mariadb >> $LOG_FILE 2>&1
         
@@ -77,12 +108,16 @@ if ! dpkg -l | grep -q mariadb-server; then
         DB_USER="dkapp_user"
         DB_PASS=$(openssl rand -base64 12)
         
-        mysql -u root -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;" >> $LOG_FILE 2>&1
-        mysql -u root -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';" >> $LOG_FILE 2>&1
-        mysql -u root -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';" >> $LOG_FILE 2>&1
-        mysql -u root -e "FLUSH PRIVILEGES;" >> $LOG_FILE 2>&1
-        
-        log_success "Base de datos y usuario MariaDB configurados."
+        log_info "Creando base de datos y usuario..."
+        if mysql -u root -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;" >> $LOG_FILE 2>&1 && \
+           mysql -u root -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';" >> $LOG_FILE 2>&1 && \
+           mysql -u root -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';" >> $LOG_FILE 2>&1 && \
+           mysql -u root -e "FLUSH PRIVILEGES;" >> $LOG_FILE 2>&1; then
+            log_success "Base de datos y usuario MariaDB configurados."
+        else
+            log_fail "Error configurando base de datos y usuario."
+            exit 1
+        fi
         
         # Crear .env
         log_info "Creando archivo .env..."
@@ -161,7 +196,11 @@ EOF
         
         # Generar APP_KEY
         cd /var/www/html/dkapp
-        php artisan key:generate >> $LOG_FILE 2>&1
+        if php artisan key:generate >> $LOG_FILE 2>&1; then
+            log_success "APP_KEY generada."
+        else
+            log_fail "Error generando APP_KEY."
+        fi
         
         log_success "Archivo .env creado con credenciales únicas."
         
@@ -176,6 +215,7 @@ EOF
         
     else
         log_fail "Error al instalar MariaDB Server."
+        exit 1
     fi
 else
     log_info "MariaDB Server ya está instalado."
