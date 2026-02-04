@@ -108,7 +108,7 @@ jobs:
               echo '=== BACKEND INFO ==='
               whoami
               hostname
-              ip -4 addr show | awk '/inet /{print " - "$2" ("$NF")"}'
+              ip -4 -o addr show | awk '{print " - "$4" ("$2")"}'
 
               mkdir -p /var/www/html/dkapp
               chown -R root:root /var/www/html/dkapp
