@@ -99,11 +99,9 @@ jobs:
           username: root
           password: ""
           script: |
-            ssh -i /root/.ssh/id_rsa root@172.20.229.111 "
-              mkdir -p /var/www/html/dkapp
-              chown -R root:root /var/www/html/dkapp
-              unzip -o /root/${{ env.DEPLOY_PACKAGE_NAME }} -d /var/www/html/dkapp
-              cd /var/www/html/dkapp
-              chmod +x .platform/hooks/postdeploy/laravel_setup_ssh.sh
-              ./.platform/hooks/postdeploy/laravel_setup_ssh.sh
-            "
+            mkdir -p /var/www/html/dkapp
+            chown -R root:root /var/www/html/dkapp
+            unzip -o /root/${{ env.DEPLOY_PACKAGE_NAME }} -d /var/www/html/dkapp
+            cd /var/www/html/dkapp
+            chmod +x .platform/hooks/postdeploy/laravel_setup_ssh.sh
+            ./.platform/hooks/postdeploy/laravel_setup_ssh.sh
