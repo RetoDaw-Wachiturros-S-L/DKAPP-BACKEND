@@ -99,11 +99,11 @@ jobs:
           username: root
           password: "patata"
           script: |
-            # Copiar paquete al backend usando la conexión directa del túnel
-            sshpass -p "" scp -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no /root/${{ env.DEPLOY_PACKAGE_NAME }} root@${{ env.BACKEND_HOST }}:/root/
+            # Copiar paquete al backend desde la máquina intermedia
+            scp -o StrictHostKeyChecking=no /root/${{ env.DEPLOY_PACKAGE_NAME }} root@${{ env.BACKEND_HOST }}:/root/
 
-            # Ejecutar despliegue en el backend usando ssh directo
-            sshpass -p "" ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no root@${{ env.BACKEND_HOST }} "
+            # Ejecutar despliegue en el backend desde la máquina intermedia
+            ssh -o StrictHostKeyChecking=no root@${{ env.BACKEND_HOST }} "
               mkdir -p /var/www/html/dkapp
               chown -R root:root /var/www/html/dkapp
               unzip -o /root/${{ env.DEPLOY_PACKAGE_NAME }} -d /var/www/html/dkapp
