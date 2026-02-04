@@ -67,7 +67,9 @@ if ! dpkg -l | grep -q php8.5; then
     fi
     
     log_info "Agregando repositorio PHP..."
-    if echo "deb [signed-by=/usr/share/keyrings/php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list >> $LOG_FILE 2>&1; then
+    CODENAME=$(lsb_release -sc)
+    log_info "Codename detectada: $CODENAME"
+    if echo "deb [signed-by=/usr/share/keyrings/php.gpg] https://packages.sury.org/php/ $CODENAME main" | tee /etc/apt/sources.list.d/php.list >> $LOG_FILE 2>&1; then
         log_success "Repositorio PHP agregado."
     else
         log_fail "Error agregando repositorio PHP."
@@ -78,7 +80,7 @@ if ! dpkg -l | grep -q php8.5; then
     if apt update >> $LOG_FILE 2>&1; then
         log_success "Lista de paquetes actualizada para PHP."
     else
-        log_fail "Error actualizando lista de paquetes para PHP."
+        log_fail "Error actualizando lista de paquetes para PHP. Codename: $CODENAME"
         exit 1
     fi
     
