@@ -9,6 +9,14 @@ log() {
     echo "$1"
 }
 
+# Mostrar IPs del servidor de forma clara
+log "=============================="
+log "IP(s) del servidor (IPv4):"
+ip -4 addr show 2>/dev/null | awk '/inet /{print " - "$2" ("$NF")"}' | tee -a $LOG_FILE
+log "IPs (hostname -I):"
+hostname -I 2>/dev/null | awk '{print " - "$0}' | tee -a $LOG_FILE
+log "=============================="
+
 # Instalar tmux si no existe
 if ! command -v tmux &> /dev/null; then
     log "tmux no encontrado. Instalando..."
@@ -60,6 +68,7 @@ tmux new-session -d -s ngrok "ngrok http 80"
 
 if tmux has-session -t ngrok 2>/dev/null; then
     log "ngrok iniciado en segundo plano (tmux session: ngrok)."
+    log "Para ver la URL pública de ngrok: ejecuta 'ngrok http 80' en el servidor o consulta http://127.0.0.1:4040/status" 
 else
     log "Error iniciando ngrok en tmux."
     exit 1
