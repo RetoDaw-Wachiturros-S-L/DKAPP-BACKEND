@@ -15,9 +15,18 @@ log() {
 # Cambiar a directorio de la app
 cd /var/www/html/dkapp || { log "Error: No se pudo cambiar al directorio /var/www/html/dkapp"; exit 1; }
 
+# Permitir ejecución de Composer como root
+export COMPOSER_ALLOW_SUPERUSER=1
+
+# Verificar que Composer exista
+if ! command -v composer &> /dev/null; then
+    log "Error: Composer no está instalado o no está en PATH."
+    exit 1
+fi
+
 # Instalar dependencias de Composer
 log "Instalando dependencias de Composer..."
-if composer install --prefer-dist --no-dev --no-interaction --optimize-autoloader >> $LOG_FILE 2>&1; then
+if composer install --prefer-dist --no-dev --no-interaction --optimize-autoloader 2>&1 | tee -a $LOG_FILE; then
     log "Dependencias de Composer instaladas correctamente."
 else
     log "Error al instalar dependencias de Composer."
@@ -26,7 +35,7 @@ fi
 
 # Instalar dependencias de NPM
 log "Instalando dependencias de NPM..."
-if npm ci >> $LOG_FILE 2>&1; then
+if npm ci 2>&1 | tee -a $LOG_FILE; then
     log "Dependencias de NPM instaladas correctamente."
 else
     log "Error al instalar dependencias de NPM."
@@ -35,7 +44,7 @@ fi
 
 # Construir assets
 log "Construyendo assets..."
-if npm run build >> $LOG_FILE 2>&1; then
+if npm run build 2>&1 | tee -a $LOG_FILE; then
     log "Assets construidos correctamente."
 else
     log "Error al construir assets."
