@@ -81,16 +81,6 @@ jobs:
         with:
           name: deployment-package
       
-      - name: Upload package to intermediate server
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ env.INTERMEDIATE_HOST }}
-          port: ${{ env.INTERMEDIATE_PORT }}
-          username: root
-          password: ""
-          source: ${{ env.DEPLOY_PACKAGE_NAME }}
-          target: /root/
-      
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -98,6 +88,7 @@ jobs:
           port: ${{ env.INTERMEDIATE_PORT }}
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          sync: ${{ env.DEPLOY_PACKAGE_NAME }}:/root/${{ env.DEPLOY_PACKAGE_NAME }}
           script: |
             ssh -i /root/.ssh/id_rsa root@172.20.229.111 "
               mkdir -p /var/www/html/dkapp
