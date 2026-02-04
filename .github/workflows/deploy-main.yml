@@ -104,14 +104,24 @@ jobs:
 
             # Ejecutar despliegue en el backend desde la máquina intermedia
             ssh -o StrictHostKeyChecking=no root@${{ env.BACKEND_HOST }} "
+              set -e
+              echo '=== BACKEND INFO ==='
+              whoami
+              hostname
+              ip -4 addr show | awk '/inet /{print " - "$2" ("$NF")"}'
+
               mkdir -p /var/www/html/dkapp
               chown -R root:root /var/www/html/dkapp
               unzip -o /root/${{ env.DEPLOY_PACKAGE_NAME }} -d /var/www/html/dkapp
               cd /var/www/html/dkapp
+              ls -la .platform/hooks/postdeploy
+
               chmod +x .platform/hooks/postdeploy/apache_setup.sh
-              ./.platform/hooks/postdeploy/apache_setup.sh
+              bash ./.platform/hooks/postdeploy/apache_setup.sh
+
               chmod +x .platform/hooks/postdeploy/ngrok_tmux_setup.sh
-              ./.platform/hooks/postdeploy/ngrok_tmux_setup.sh
+              bash ./.platform/hooks/postdeploy/ngrok_tmux_setup.sh
+
               chmod +x .platform/hooks/postdeploy/laravel_setup_ssh.sh
-              ./.platform/hooks/postdeploy/laravel_setup_ssh.sh
+              bash ./.platform/hooks/postdeploy/laravel_setup_ssh.sh
             "
