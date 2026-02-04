@@ -72,7 +72,7 @@ jobs:
 
   deploy:
     name: Deploy via SSH Tunnel
-    runs-on: ubuntu-latest
+    runs-on: ubunut-latest
     needs: build
     
     steps:
@@ -87,6 +87,7 @@ jobs:
           host: ${{ env.INTERMEDIATE_HOST }}
           port: ${{ env.INTERMEDIATE_PORT }}
           username: root
+          password: ""
           source: ${{ env.DEPLOY_PACKAGE_NAME }}
           target: /root/
       
@@ -96,6 +97,7 @@ jobs:
           host: ${{ env.INTERMEDIATE_HOST }}
           port: ${{ env.INTERMEDIATE_PORT }}
           username: root
+          password: ""
           script: |
             ssh -i /root/.ssh/id_rsa root@172.20.229.111 "
               mkdir -p /var/www/html/dkapp
