@@ -26,12 +26,30 @@ fi
 # Asegurar PHP en Apache (módulo)
 if ! apache2ctl -M 2>/dev/null | grep -q "php"; then
     log "Módulo PHP no detectado en Apache. Instalando libapache2-mod-php..."
-    if apt install -y php8.4 libapache2-mod-php8.4 >> $LOG_FILE 2>&1; then
-        log "PHP y libapache2-mod-php instalados."
-        a2enmod php8.4 >> $LOG_FILE 2>&1
+
+    PHP_VER=$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;' 2>/dev/null)
+    if [ -z "$PHP_VER" ]; then
+        log "No se pudo detectar versión de PHP. Instalando metapaquete libapache2-mod-php."
+        if apt update >> $LOG_FILE 2>&1 && apt install -y libapache2-mod-php >> $LOG_FILE 2>&1; then
+            log "libapache2-mod-php instalado."
+        else
+            log "Error instalando libapache2-mod-php."
+            exit 1
+        fi
     else
-        log "Error instalando libapache2-mod-php."
-        exit 1
+        log "PHP detectado: $PHP_VER. Instalando libapache2-mod-php$PHP_VER..."
+        if apt update >> $LOG_FILE 2>&1 && apt install -y "libapache2-mod-php$PHP_VER" >> $LOG_FILE 2>&1; then
+            log "libapache2-mod-php$PHP_VER instalado."
+            a2enmod "php$PHP_VER" >> $LOG_FILE 2>&1 || true
+        else
+            log "Fallo al instalar libapache2-mod-php$PHP_VER. Probando metapaquete libapache2-mod-php..."
+            if apt install -y libapache2-mod-php >> $LOG_FILE 2>&1; then
+                log "libapache2-mod-php instalado."
+            else
+                log "Error instalando libapache2-mod-php."
+                exit 1
+            fi
+        fi
     fi
 else
     log "Módulo PHP ya está habilitado en Apache."
