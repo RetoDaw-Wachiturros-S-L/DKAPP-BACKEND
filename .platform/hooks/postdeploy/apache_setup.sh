@@ -23,6 +23,20 @@ else
     log "Apache ya está instalado."
 fi
 
+# Asegurar PHP en Apache (módulo)
+if ! apache2ctl -M 2>/dev/null | grep -q "php"; then
+    log "Módulo PHP no detectado en Apache. Instalando libapache2-mod-php..."
+    if apt install -y php8.4 libapache2-mod-php8.4 >> $LOG_FILE 2>&1; then
+        log "PHP y libapache2-mod-php instalados."
+        a2enmod php8.4 >> $LOG_FILE 2>&1
+    else
+        log "Error instalando libapache2-mod-php."
+        exit 1
+    fi
+else
+    log "Módulo PHP ya está habilitado en Apache."
+fi
+
 # Habilitar mod_rewrite
 log "Habilitando mod_rewrite..."
 if a2enmod rewrite >> $LOG_FILE 2>&1; then
@@ -37,6 +51,8 @@ cat > /etc/apache2/sites-available/dkapp.conf <<EOF
 <VirtualHost *:80>
     ServerName localhost
     DocumentRoot /var/www/html/dkapp/public
+
+    DirectoryIndex index.php index.html
 
     <Directory /var/www/html/dkapp/public>
         AllowOverride All
