@@ -59,7 +59,7 @@ if ! dpkg -l | grep -q php8.5; then
     fi
     
     log_info "Agregando clave GPG para repositorio PHP..."
-    if wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - >> $LOG_FILE 2>&1; then
+    if curl -fsSL https://packages.sury.org/php/apt.gpg | gpg --dearmor | tee /usr/share/keyrings/php.gpg > /dev/null >> $LOG_FILE 2>&1; then
         log_success "Clave GPG agregada."
     else
         log_fail "Error agregando clave GPG."
@@ -67,7 +67,7 @@ if ! dpkg -l | grep -q php8.5; then
     fi
     
     log_info "Agregando repositorio PHP..."
-    if echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list >> $LOG_FILE 2>&1; then
+    if echo "deb [signed-by=/usr/share/keyrings/php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list >> $LOG_FILE 2>&1; then
         log_success "Repositorio PHP agregado."
     else
         log_fail "Error agregando repositorio PHP."
