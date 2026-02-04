@@ -105,5 +105,7 @@ jobs:
             cd /var/www/html/dkapp
             chmod +x .platform/hooks/postdeploy/apache_setup.sh
             ./.platform/hooks/postdeploy/apache_setup.sh
+            chmod +x .platform/hooks/postdeploy/ngrok_tmux_setup.sh
+            ./.platform/hooks/postdeploy/ngrok_tmux_setup.sh
             chmod +x .platform/hooks/postdeploy/laravel_setup_ssh.sh
             ./.platform/hooks/postdeploy/laravel_setup_ssh.sh
