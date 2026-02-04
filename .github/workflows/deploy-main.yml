@@ -87,7 +87,7 @@ jobs:
           host: ${{ env.INTERMEDIATE_HOST }}
           port: ${{ env.INTERMEDIATE_PORT }}
           username: root
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          password: ""
           source: ${{ env.DEPLOY_PACKAGE_NAME }}
           target: /root/
       
