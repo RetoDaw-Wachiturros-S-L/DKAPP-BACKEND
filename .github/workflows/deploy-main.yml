@@ -8,8 +8,8 @@ on:
 
 env:
   DEPLOY_PACKAGE_NAME: dka-${{ github.sha }}.zip
-  INTERMEDIATE_HOST: 7.tcp.eu.ngrok.io
-  INTERMEDIATE_PORT: 14426
+  INTERMEDIATE_HOST: 4.tcp.eu.ngrok.io
+  INTERMEDIATE_PORT: 16121
   BACKEND_HOST: 172.20.229.111
   BACKEND_PORT: 22
   BACKEND_USER: root
@@ -87,7 +87,7 @@ jobs:
           host: ${{ env.INTERMEDIATE_HOST }}
           port: ${{ env.INTERMEDIATE_PORT }}
           username: root
-          password: "patata"
+          password: ""
           source: ${{ env.DEPLOY_PACKAGE_NAME }}
           target: /root/
       
@@ -97,7 +97,7 @@ jobs:
           host: ${{ env.INTERMEDIATE_HOST }}
           port: ${{ env.INTERMEDIATE_PORT }}
           username: root
-          password: "patata"
+          password: ""
           script: |
             mkdir -p /var/www/html/dkapp
             chown -R root:root /var/www/html/dkapp
