@@ -59,7 +59,8 @@ if ! dpkg -l | grep -q php8.5; then
     fi
     
     log_info "Agregando clave GPG para repositorio PHP..."
-    if curl -fsSL https://packages.sury.org/php/apt.gpg | gpg --dearmor | tee /usr/share/keyrings/php.gpg > /dev/null >> $LOG_FILE 2>&1; then
+    rm -f /usr/share/keyrings/php.gpg
+    if curl -fsSL https://packages.sury.org/php/apt.gpg | gpg --dearmor -o /usr/share/keyrings/php.gpg >> $LOG_FILE 2>&1; then
         log_success "Clave GPG agregada."
     else
         log_fail "Error agregando clave GPG."
@@ -142,9 +143,9 @@ LOG_LEVEL=error
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=$DB_NAME
-DB_USERNAME=$DB_USER
-DB_PASSWORD=$DB_PASS
+DB_DATABASE=dkapp
+DB_USERNAME=dkapp_user
+DB_PASSWORD=Patata.2024
 
 BROADCAST_DRIVER=log
 CACHE_DRIVER=file
