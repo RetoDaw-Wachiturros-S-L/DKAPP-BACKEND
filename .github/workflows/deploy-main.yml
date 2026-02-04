@@ -87,8 +87,7 @@ jobs:
           host: ${{ env.INTERMEDIATE_HOST }}
           port: ${{ env.INTERMEDIATE_PORT }}
           username: root
-          key: ""
-          use_insecure_cipher: true
+          password: "patata"
           source: ${{ env.DEPLOY_PACKAGE_NAME }}
           target: /root/
       
@@ -98,8 +97,7 @@ jobs:
           host: ${{ env.INTERMEDIATE_HOST }}
           port: ${{ env.INTERMEDIATE_PORT }}
           username: root
-          key: ""
-          use_insecure_cipher: true
+          password: "patata"
           script: |
             mkdir -p /var/www/html/dkapp
             chown -R root:root /var/www/html/dkapp
